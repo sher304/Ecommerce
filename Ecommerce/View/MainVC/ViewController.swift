@@ -81,7 +81,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
-    private lazy var collectionV: UICollectionView = {
+    private lazy var categoryCollectionV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         
@@ -136,6 +136,46 @@ class MainViewController: UIViewController {
         label.font = UIFont(name: "Mark Pro", size: 15)
         label.text = "see more"
         return label
+    }()
+    
+    private lazy var wheelCollectionImage: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        
+        let collectionV = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionV.delegate = self
+        collectionV.dataSource = self
+        collectionV.register(WheelCollectionCell.self, forCellWithReuseIdentifier: WheelCollectionCell.identifier)
+        collectionV.isPagingEnabled = true
+        collectionV.showsHorizontalScrollIndicator = false
+        collectionV.layer.cornerRadius = 13
+        collectionV.layer.masksToBounds = true
+        collectionV.backgroundColor = contentView.backgroundColor
+        return collectionV
+    }()
+    
+    private lazy var bestSellerLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Best Seller"
+        label.font = UIFont(name: "Mark Pro Bold", size: 25)
+        label.textColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        return label
+    }()
+    
+    private lazy var seeMoreSecondTitle: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
+        label.font = UIFont(name: "Mark Pro", size: 15)
+        label.text = "see more"
+        return label
+    }()
+    
+    private lazy var productsTableView: UITableView = {
+        let tableV = UITableView()
+        
+        return tableV
     }()
     
     override func viewDidLoad() {
@@ -196,8 +236,8 @@ class MainViewController: UIViewController {
             make.centerY.equalTo(categoriesTitle)
         }
         
-        contentView.addSubview(collectionV)
-        collectionV.snp.makeConstraints { make in
+        contentView.addSubview(categoryCollectionV)
+        categoryCollectionV.snp.makeConstraints { make in
             make.leading.equalTo(27)
             make.top.equalTo(categoriesTitle.snp.bottom).offset(24)
             make.trailing.equalToSuperview()
@@ -206,7 +246,7 @@ class MainViewController: UIViewController {
         
         contentView.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
-            make.top.equalTo(collectionV.snp.bottom).offset(30)
+            make.top.equalTo(categoryCollectionV.snp.bottom).offset(30)
             make.leading.equalTo(32)
             make.height.equalTo(34)
             make.width.equalTo(300)
@@ -235,6 +275,26 @@ class MainViewController: UIViewController {
             make.trailing.equalTo(-33)
             make.centerY.equalTo(salesLabel)
         }
+        
+        contentView.addSubview(wheelCollectionImage)
+        wheelCollectionImage.snp.makeConstraints { make in
+            make.leading.equalTo(15)
+            make.trailing.equalTo(-21)
+            make.height.equalTo(182)
+            make.top.equalTo(salesLabel.snp.bottom).offset(8)
+        }
+        
+        contentView.addSubview(bestSellerLabel)
+        bestSellerLabel.snp.makeConstraints { make in
+            make.leading.equalTo(17)
+            make.top.equalTo(wheelCollectionImage.snp.bottom).offset(3)
+        }
+        
+        contentView.addSubview(seeMoreSecondTitle)
+        seeMoreSecondTitle.snp.makeConstraints { make in
+            make.trailing.equalTo(-27)
+            make.centerY.equalTo(bestSellerLabel)
+        }
     }
 }
 
@@ -246,19 +306,36 @@ extension MainViewController: MainView{
 
 extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        if collectionView == categoryCollectionV{
+            return presenter.items.count
+        }
+        else{
+            return presenter.images.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollecitonCell.identifier, for: indexPath) as? CollecitonCell else { return CollecitonCell()}
-        let items = presenter.items
-        let images = presenter.images
-        cell.fetchData(icon: images[indexPath.row], title: items[indexPath.row])
-        return cell
+        if collectionView == categoryCollectionV{
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollecitonCell.identifier, for: indexPath) as? CollecitonCell else { return CollecitonCell()}
+            
+            let items = presenter.items
+            let images = presenter.images
+            cell.fetchData(icon: images[indexPath.row], title: items[indexPath.row])
+            return cell
+        }else{
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WheelCollectionCell.identifier, for: indexPath) as? WheelCollectionCell else { return WheelCollectionCell()}
+            let images = presenter.images
+            cell.fetchData(image: images[indexPath.row])
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 77, height: 77)
+        if collectionView == categoryCollectionV{
+            return CGSize(width: 77, height: 77)
+        }else{
+            return CGSize(width: wheelCollectionImage.frame.width, height: wheelCollectionImage.frame.height)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -272,6 +349,10 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             cell.didDeselect(indx: indexPath.row + 1)
         }
     }
+    
+    
+    
+    
 }
 
 extension MainViewController: UIScrollViewDelegate{
