@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
 protocol MainPresenterView: AnyObject{
     init(view: MainView)
     func viewDidLoad()
+    var items: [String] { get }
+    var images: [UIImage] { get }
 }
 
 class MainPresenter: MainPresenterView{
@@ -21,6 +24,14 @@ class MainPresenter: MainPresenterView{
     private weak var view: MainView?
     
     var products: [Product] = []
+    
+    let items: [String] = ["Phones", "Computer", "Health", "Books", "Tools"]
+    let images = [UIImage(systemName: "iphone")!,
+                  UIImage(systemName: "desktopcomputer")!,
+                  UIImage(systemName: "bolt.heart")!,
+                  UIImage(systemName: "books.vertical")!,
+                  UIImage(systemName: "paintbrush")!]
+    
     
     func viewDidLoad(){
         network.parseDatas { [self] data in
