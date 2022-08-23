@@ -18,6 +18,25 @@ class DetailViewController: UIViewController {
     
     var productDetail: ProductDetail? = nil
     
+    private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + 300)
+    
+    private lazy var scrollView: UIScrollView = {
+        let scrollV = UIScrollView()
+        scrollV.contentSize = contentSize
+        scrollV.frame = view.bounds
+        scrollV.backgroundColor = UIColor.customBackgroundWhite
+        scrollV.contentInsetAdjustmentBehavior = .never
+        scrollV.delegate = self
+        return scrollV
+    }()
+    
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.frame.size = contentSize
+        view.backgroundColor = view.backgroundColor
+        return view
+    }()
+    
     private lazy var titleSceen: UILabel = {
         let label = UILabel()
         label.text = "Product Details"
@@ -126,48 +145,117 @@ class DetailViewController: UIViewController {
         return collectionV
     }()
     
+    private lazy var cpuImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(systemName: "cpu")
+        imageV.tintColor = UIColor.customGray
+        return imageV
+    }()
+    
+    private lazy var cpuTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Exynos 990"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
+    }()
+    
+    private lazy var cameraImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(systemName: "camera")
+        imageV.tintColor = UIColor.customGray
+        return imageV
+    }()
+    
+    private lazy var cameraTitle: UILabel = {
+        let label = UILabel()
+        label.text = "108 + 12 mp"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
+    }()
+    
+    private lazy var ssdImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(systemName: "memorychip")
+        imageV.tintColor = UIColor.customGray
+        return imageV
+    }()
+    
+    private lazy var ssdTitle: UILabel = {
+        let label = UILabel()
+        label.text = "8 GB"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
+    }()
+    
+    private lazy var sdcardImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(systemName: "sdcard")
+        imageV.tintColor = UIColor.customGray
+        return imageV
+    }()
+    
+    private lazy var sdcardTitle: UILabel = {
+        let label = UILabel()
+        label.text = "256 GB"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
+    }()
+    
+    private lazy var selectColorLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select color and capacity"
+        label.textColor = UIColor.customDarkBlue
+        label.font = UIFont(name: "Makr Pro Medium", size: 16)
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
-        setupConstraints()
+        setupView()
     }
     
     func setupView(){
-        view.backgroundColor = UIColor.customBackgroundWhite
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        setupConstraints()
     }
     
     func setupConstraints(){
-        setupView()
         
-        view.addSubview(titleSceen)
+        contentView.addSubview(titleSceen)
         titleSceen.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(86)
         }
         
-        view.addSubview(backButton)
+        contentView.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.leading.equalTo(42)
             make.top.equalTo(79)
             make.width.height.equalTo(37)
         }
         
-        view.addSubview(cartButton)
+        contentView.addSubview(cartButton)
         cartButton.snp.makeConstraints { make in
             make.trailing.equalTo(-35)
             make.top.equalTo(79)
             make.width.height.equalTo(37)
         }
         
-        view.addSubview(wheelProductCollection)
+        contentView.addSubview(wheelProductCollection)
         wheelProductCollection.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.height.equalTo(350)
+            make.height.equalTo(330)
             make.top.equalTo(titleSceen.snp.bottom).offset(37)
         }
         
-        view.addSubview(informParentView)
+        contentView.addSubview(informParentView)
         informParentView.snp.makeConstraints { make in
             make.top.equalTo(wheelProductCollection.snp.bottom).offset(7)
             make.leading.trailing.bottom.equalToSuperview()
@@ -221,7 +309,64 @@ class DetailViewController: UIViewController {
             make.trailing.equalTo(-45)
         }
         
+        informParentView.addSubview(cpuImage)
+        cpuImage.snp.makeConstraints { make in
+            make.leading.equalTo(45)
+            make.width.height.equalTo(28)
+            make.top.equalTo(elementCollectionView.snp.bottom).offset(35)
+        }
         
+        informParentView.addSubview(cpuTitle)
+        cpuTitle.snp.makeConstraints { make in
+            make.centerX.equalTo(cpuImage)
+            make.top.equalTo(cpuImage.snp.bottom).offset(5)
+        }
+        
+        informParentView.addSubview(cameraImage)
+        cameraImage.snp.makeConstraints { make in
+            make.leading.equalTo(cpuImage.snp.trailing).offset(74)
+            make.centerY.equalTo(cpuImage)
+            make.width.equalTo(28)
+            make.height.equalTo(22)
+        }
+        
+        informParentView.addSubview(cameraTitle)
+        cameraTitle.snp.makeConstraints { make in
+            make.centerY.equalTo(cpuTitle)
+            make.centerX.equalTo(cameraImage)
+        }
+        
+        informParentView.addSubview(ssdImage)
+        ssdImage.snp.makeConstraints { make in
+            make.width.equalTo(28)
+            make.height.equalTo(21)
+            make.centerY.equalTo(cameraImage)
+            make.leading.equalTo(cameraImage.snp.trailing).offset(64)
+        }
+        
+        informParentView.addSubview(ssdTitle)
+        ssdTitle.snp.makeConstraints { make in
+            make.centerX.equalTo(ssdImage)
+            make.centerY.equalTo(cameraTitle)
+        }
+        
+        informParentView.addSubview(sdcardImage)
+        sdcardImage.snp.makeConstraints { make in
+            make.leading.equalTo(ssdImage.snp.trailing).offset(68)
+            make.centerY.equalTo(ssdImage)
+        }
+        
+        informParentView.addSubview(sdcardTitle)
+        sdcardTitle.snp.makeConstraints { make in
+            make.centerY.equalTo(ssdTitle)
+            make.centerX.equalTo(sdcardImage)
+        }
+        
+        informParentView.addSubview(selectColorLabel)
+        selectColorLabel.snp.makeConstraints { make in
+            make.leading.equalTo(30)
+            make.top.equalTo(cameraTitle.snp.bottom).offset(29)
+        }
     }
 }
 
@@ -276,4 +421,18 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
         }
     }
     
+}
+extension DetailViewController: UIScrollViewDelegate{
+    //MARK: Scroll Down, Hide Navbar
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+            //scrolling down
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        }
+        //MARK: Scroll Up, Show Navbar
+        else{
+            //scrolling up
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        }
+    }
 }

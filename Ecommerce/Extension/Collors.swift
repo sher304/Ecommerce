@@ -15,5 +15,5 @@ extension UIColor{
     static let customBackgroundWhite = UIColor(red: 229/255, green: 229/255, blue: 229/255, alpha: 1)
     static let customOrangeTint = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
     static let customYellowTint = UIColor(red: 255/255, green: 184/255, blue: 0, alpha: 1)
-    
+    static let customGray = UIColor(red: 183/255, green: 183/255, blue: 183/255, alpha: 1)
 }
