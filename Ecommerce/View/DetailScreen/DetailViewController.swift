@@ -94,6 +94,7 @@ class DetailViewController: UIViewController {
         button.layer.cornerRadius = 10
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.tintColor = .white
+        button.addTarget(self, action: #selector(favTappet), for: .touchUpInside)
         return button
     }()
     
@@ -214,6 +215,7 @@ class DetailViewController: UIViewController {
         button.setImage(UIImage(systemName: "checkmark"), for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 40 / 2
+        button.addTarget(self, action: #selector(colorTappet), for: .touchUpInside)
         return button
     }()
     
@@ -222,6 +224,7 @@ class DetailViewController: UIViewController {
         button.backgroundColor = UIColor.customDarkBlue
         button.tintColor = .white
         button.layer.cornerRadius = 40 / 2
+        button.addTarget(self, action: #selector(colorTappet), for: .touchUpInside)
         return button
     }()
     
@@ -232,6 +235,7 @@ class DetailViewController: UIViewController {
         button.backgroundColor = UIColor.customOrangeTint
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 13)
+        button.addTarget(self, action: #selector(selectGB), for: .touchUpInside)
         return button
     }()
     
@@ -240,6 +244,8 @@ class DetailViewController: UIViewController {
         button.setTitle("256 GB", for: .normal)
         button.setTitleColor(UIColor(red: 141/255, green: 141/255, blue: 141/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont(name: "Mark Pro", size: 13)
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(selectGB), for: .touchUpInside)
         return button
     }()
     
@@ -441,6 +447,8 @@ class DetailViewController: UIViewController {
         selectGB256.snp.makeConstraints { make in
             make.leading.equalTo(selectGB128.snp.trailing).offset(20)
             make.centerY.equalTo(selectGB128)
+            make.width.equalTo(71)
+            make.height.equalTo(30)
         }
         
         informParentView.addSubview(addToCartButton)
@@ -460,6 +468,44 @@ class DetailViewController: UIViewController {
             ssdTitle.text = productDetail?.ssd
             sdcardTitle.text = productDetail?.sd
             addToCartButton.setTitle("Add to Cart                 $\(productDetail?.price ?? Int())", for: .normal)
+            if productDetail?.isFavorites ?? Bool(){
+                favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            }
+        }
+    }
+    
+    @objc func selectGB(btn: UIButton){
+        if btn == selectGB256{
+            selectGB256.backgroundColor = UIColor.customOrangeTint
+            selectGB256.setTitleColor(.white, for: .normal)
+            selectGB128.backgroundColor = .clear
+            selectGB128.setTitleColor(UIColor(red: 141/255, green: 141/255, blue: 141/255, alpha: 1), for: .normal)
+        }else{
+            selectGB128.backgroundColor = UIColor.customOrangeTint
+            selectGB128.setTitleColor(.white, for: .normal)
+            selectGB256.backgroundColor = .clear
+            selectGB256.setTitleColor(UIColor(red: 141/255, green: 141/255, blue: 141/255, alpha: 1), for: .normal)
+        }
+    }
+    
+    @objc func colorTappet(btn: UIButton){
+        if btn == brownButton{
+            brownButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            darkButton.setImage(UIImage(), for: .normal)
+        }else{
+            darkButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            brownButton.setImage(UIImage(), for: .normal)
+        }
+    }
+    
+    var validator = true
+    @objc func favTappet(){
+        if validator{
+            favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            validator = false
+        }else{
+            favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            validator = true
         }
     }
 }
