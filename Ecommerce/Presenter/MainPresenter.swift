@@ -11,8 +11,6 @@ import UIKit
 protocol MainPresenterView: AnyObject{
     init(view: MainView)
     func viewDidLoad()
-    var items: [String] { get }
-    var images: [UIImage] { get }
 }
 
 class MainPresenter: MainPresenterView{
@@ -23,7 +21,6 @@ class MainPresenter: MainPresenterView{
     
     private weak var view: MainView?
     
-    var products: [Product] = []
     
     let items: [String] = ["Phones", "Computer", "Health", "Books", "Tools"]
     let images = [UIImage(systemName: "iphone")!,
@@ -35,8 +32,7 @@ class MainPresenter: MainPresenterView{
     
     func viewDidLoad(){
         network.parseDatas { [self] data in
-            products = [data]
-            view?.reloadData()
+            view?.showProducts(products: data)
         }
     }
     

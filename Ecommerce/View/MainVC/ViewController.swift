@@ -10,14 +10,16 @@ import SnapKit
 
 protocol MainView: AnyObject{
     func reloadData()
-    
+    func showProducts(products: Product)
 }
 
 class MainViewController: UIViewController {
     
-    var presenter: MainPresenterView!
+    var presenter: MainPresenter!
     
-    private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + 160)
+    var products: Product? = nil
+    
+    private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + 360)
     
     private lazy var scrollView: UIScrollView = {
         let scrollV = UIScrollView()
@@ -150,7 +152,7 @@ class MainViewController: UIViewController {
         collectionV.register(WheelCollectionCell.self, forCellWithReuseIdentifier: WheelCollectionCell.identifier)
         collectionV.isPagingEnabled = true
         collectionV.showsHorizontalScrollIndicator = false
-        collectionV.layer.cornerRadius = 13
+        collectionV.layer.cornerRadius = 25
         collectionV.layer.masksToBounds = true
         collectionV.backgroundColor = contentView.backgroundColor
         return collectionV
@@ -174,12 +176,17 @@ class MainViewController: UIViewController {
     
     private lazy var productsTableView: UITableView = {
         let tableV = UITableView()
-        
+        tableV.register(CustomTableCell.self, forCellReuseIdentifier: CustomTableCell.identifier)
+        tableV.delegate = self
+        tableV.dataSource = self
+        tableV.backgroundColor = contentView.backgroundColor
         return tableV
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.viewDidLoad()
+        reloadData()
         setupNavBar()
     }
     
@@ -287,7 +294,7 @@ class MainViewController: UIViewController {
         contentView.addSubview(bestSellerLabel)
         bestSellerLabel.snp.makeConstraints { make in
             make.leading.equalTo(17)
-            make.top.equalTo(wheelCollectionImage.snp.bottom).offset(3)
+            make.top.equalTo(wheelCollectionImage.snp.bottom).offset(10)
         }
         
         contentView.addSubview(seeMoreSecondTitle)
@@ -295,12 +302,24 @@ class MainViewController: UIViewController {
             make.trailing.equalTo(-27)
             make.centerY.equalTo(bestSellerLabel)
         }
+        
+        contentView.addSubview(productsTableView)
+        productsTableView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(bestSellerLabel.snp.bottom).offset(21)
+            make.bottom.equalToSuperview()
+        }
     }
 }
 
 extension MainViewController: MainView{
+    func showProducts(products: Product) {
+        self.products = products
+        wheelCollectionImage.reloadData()
+    }
+    
     func reloadData(){
-        
+        wheelCollectionImage.reloadData()
     }
 }
 
@@ -310,7 +329,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return presenter.items.count
         }
         else{
-            return presenter.images.count
+            return products?.homeStore.count ?? 0
         }
     }
     
@@ -324,8 +343,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return cell
         }else{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WheelCollectionCell.identifier, for: indexPath) as? WheelCollectionCell else { return WheelCollectionCell()}
-            let images = presenter.images
-            cell.fetchData(image: images[indexPath.row])
+            let images = products?.homeStore[indexPath.row].picture
+            cell.fetchData(image: images ?? String())
             return cell
         }
     }
@@ -349,9 +368,22 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             cell.didDeselect(indx: indexPath.row + 1)
         }
     }
+}
+
+extension MainViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = CustomTableCell()
+        cell.backgroundColor = .red
+        return cell
+    }
     
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return productsTableView.frame.height
+    }
     
 }
 

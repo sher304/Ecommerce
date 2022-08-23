@@ -19,9 +19,11 @@ class Network: NetworkService{
     func parseDatas(completion: @escaping(Product) -> Void){
         guard let url = URL(string: "https://run.mocky.io/v3/654bd15e-b121-49ba-a588-960956b15175") else { return }
         AF.request(url).response { responce in
-            guard let data = responce.data else { return }
-            guard let decoderData = try? JSONDecoder().decode(Product.self, from: data) else { return }
-            completion(decoderData)
+            DispatchQueue.main.async {
+                guard let data = responce.data else { return }
+                guard let decoderData = try? JSONDecoder().decode(Product.self, from: data) else { return }
+                completion(decoderData)
+            }
         }
     }
 }
