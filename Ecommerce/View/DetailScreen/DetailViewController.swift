@@ -18,7 +18,7 @@ class DetailViewController: UIViewController {
     
     var productDetail: ProductDetail? = nil
     
-    private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + 300)
+    private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + 100)
     
     private lazy var scrollView: UIScrollView = {
         let scrollV = UIScrollView()
@@ -213,6 +213,49 @@ class DetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var brownButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.customBrown
+        button.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        button.tintColor = .white
+        button.layer.cornerRadius = 40 / 2
+        return button
+    }()
+    
+    private lazy var darkButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.customDarkBlue
+        button.tintColor = .white
+        button.layer.cornerRadius = 40 / 2
+        return button
+    }()
+    
+    private lazy var selectGB128: UIButton = {
+        let button = UIButton()
+        button.setTitle("128 GB", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.customOrangeTint
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 13)
+        return button
+    }()
+    
+    private lazy var selectGB256: UIButton = {
+        let button = UIButton()
+        button.setTitle("256 GB", for: .normal)
+        button.setTitleColor(UIColor(red: 141/255, green: 141/255, blue: 141/255, alpha: 1), for: .normal)
+        button.titleLabel?.font = UIFont(name: "Mark Pro", size: 13)
+        return button
+    }()
+    
+    private lazy var addToCartButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Add to Cart                $1,500.00", for: .normal)
+        button.backgroundColor = UIColor.customOrangeTint
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
@@ -223,7 +266,16 @@ class DetailViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         setupConstraints()
+        setupNavBar()
     }
+    
+    func setupNavBar(){
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
+    }
+    
     
     func setupConstraints(){
         
@@ -366,6 +418,42 @@ class DetailViewController: UIViewController {
         selectColorLabel.snp.makeConstraints { make in
             make.leading.equalTo(30)
             make.top.equalTo(cameraTitle.snp.bottom).offset(29)
+        }
+        
+        informParentView.addSubview(brownButton)
+        brownButton.snp.makeConstraints { make in
+            make.leading.equalTo(35)
+            make.top.equalTo(selectColorLabel.snp.bottom).offset(15)
+            make.width.height.equalTo(40)
+        }
+        
+        informParentView.addSubview(darkButton)
+        darkButton.snp.makeConstraints { make in
+            make.leading.equalTo(brownButton.snp.trailing).offset(18)
+            make.width.height.equalTo(40)
+            make.centerY.equalTo(brownButton)
+        }
+        
+        informParentView.addSubview(selectGB128)
+        selectGB128.snp.makeConstraints { make in
+            make.leading.equalTo(darkButton.snp.trailing).offset(58)
+            make.centerY.equalTo(darkButton)
+            make.width.equalTo(71)
+            make.height.equalTo(30)
+        }
+        
+        informParentView.addSubview(selectGB256)
+        selectGB256.snp.makeConstraints { make in
+            make.leading.equalTo(selectGB128.snp.trailing).offset(20)
+            make.centerY.equalTo(selectGB128)
+        }
+        
+        informParentView.addSubview(addToCartButton)
+        addToCartButton.snp.makeConstraints { make in
+            make.leading.equalTo(29)
+            make.trailing.equalTo(-30)
+            make.height.equalTo(54)
+            make.bottom.equalTo(-58)
         }
     }
 }
