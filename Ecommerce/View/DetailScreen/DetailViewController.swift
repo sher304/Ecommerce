@@ -14,9 +14,28 @@ protocol DetailView: AnyObject{
 
 class DetailViewController: UIViewController {
     
-    var presenter: DetailPresenterView?
+    var presenter: DetailPresenter?
     
     var productDetail: ProductDetail? = nil
+    
+    private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + 100)
+    
+    private lazy var scrollView: UIScrollView = {
+        let scrollV = UIScrollView()
+        scrollV.contentSize = contentSize
+        scrollV.frame = view.bounds
+        scrollV.backgroundColor = UIColor.customBackgroundWhite
+        scrollV.contentInsetAdjustmentBehavior = .never
+        scrollV.delegate = self
+        return scrollV
+    }()
+    
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.frame.size = contentSize
+        view.backgroundColor = view.backgroundColor
+        return view
+    }()
     
     private lazy var titleSceen: UILabel = {
         let label = UILabel()
@@ -115,85 +134,180 @@ class DetailViewController: UIViewController {
         return imageV
     }()
     
-    private lazy var fifthStar: UIImageView = {
+    private lazy var elementCollectionView: UICollectionView  = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionV = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionV.register(ElementsCustomCell.self, forCellWithReuseIdentifier: ElementsCustomCell.indentifier)
+        collectionV.delegate = self
+        collectionV.dataSource = self
+        collectionV.backgroundColor = .white
+        return collectionV
+    }()
+    
+    private lazy var cpuImage: UIImageView = {
         let imageV = UIImageView()
-        imageV.image = UIImage(systemName: "star.fill")
-        imageV.tintColor = UIColor.customYellowTint
+        imageV.image = UIImage(systemName: "cpu")
+        imageV.tintColor = UIColor.customGray
         return imageV
     }()
     
-    private lazy var hideStar: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
+    private lazy var cpuTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Exynos 990"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
     }()
     
-    private lazy var shopButton: UIButton = {
+    private lazy var cameraImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(systemName: "camera")
+        imageV.tintColor = UIColor.customGray
+        return imageV
+    }()
+    
+    private lazy var cameraTitle: UILabel = {
+        let label = UILabel()
+        label.text = "108 + 12 mp"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
+    }()
+    
+    private lazy var ssdImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(systemName: "memorychip")
+        imageV.tintColor = UIColor.customGray
+        return imageV
+    }()
+    
+    private lazy var ssdTitle: UILabel = {
+        let label = UILabel()
+        label.text = "8 GB"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
+    }()
+    
+    private lazy var sdcardImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(systemName: "sdcard")
+        imageV.tintColor = UIColor.customGray
+        return imageV
+    }()
+    
+    private lazy var sdcardTitle: UILabel = {
+        let label = UILabel()
+        label.text = "256 GB"
+        label.font = UIFont(name: "Mark Pro", size: 11)
+        label.textColor = UIColor.customGray
+        return label
+    }()
+    
+    private lazy var selectColorLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select color and capacity"
+        label.textColor = UIColor.customDarkBlue
+        label.font = UIFont(name: "Makr Pro Medium", size: 16)
+        return label
+    }()
+    
+    private lazy var brownButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Shop", for: .normal)
-        button.setTitleColor(UIColor.customDarkBlue, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 20)
+        button.backgroundColor = UIColor.customBrown
+        button.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        button.tintColor = .white
+        button.layer.cornerRadius = 40 / 2
         return button
     }()
     
-    private lazy var detailButton: UIButton = {
+    private lazy var darkButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Details", for: .normal)
-        button.setTitleColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.5), for: .normal)
-        button.titleLabel?.font = UIFont(name: "Mark Pro", size: 20)
+        button.backgroundColor = UIColor.customDarkBlue
+        button.tintColor = .white
+        button.layer.cornerRadius = 40 / 2
         return button
     }()
     
-    private lazy var featuresButton: UIButton = {
+    private lazy var selectGB128: UIButton = {
         let button = UIButton()
-        button.setTitle("Features", for: .normal)
-        button.setTitleColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.5), for: .normal)
-        button.titleLabel?.font = UIFont(name: "Mark Pro", size: 20)
+        button.setTitle("128 GB", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.customOrangeTint
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 13)
+        return button
+    }()
+    
+    private lazy var selectGB256: UIButton = {
+        let button = UIButton()
+        button.setTitle("256 GB", for: .normal)
+        button.setTitleColor(UIColor(red: 141/255, green: 141/255, blue: 141/255, alpha: 1), for: .normal)
+        button.titleLabel?.font = UIFont(name: "Mark Pro", size: 13)
+        return button
+    }()
+    
+    private lazy var addToCartButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Add to Cart                $1,500.00", for: .normal)
+        button.backgroundColor = UIColor.customOrangeTint
+        button.layer.cornerRadius = 10
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
-        setupConstraints()
+        setupView()
     }
     
     func setupView(){
-        view.backgroundColor = UIColor.customBackgroundWhite
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        setupConstraints()
+        setupNavBar()
     }
     
+    func setupNavBar(){
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
+    }
+    
+    
     func setupConstraints(){
-        setupView()
         
-        view.addSubview(titleSceen)
+        contentView.addSubview(titleSceen)
         titleSceen.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(86)
         }
         
-        view.addSubview(backButton)
+        contentView.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.leading.equalTo(42)
             make.top.equalTo(79)
             make.width.height.equalTo(37)
         }
         
-        view.addSubview(cartButton)
+        contentView.addSubview(cartButton)
         cartButton.snp.makeConstraints { make in
             make.trailing.equalTo(-35)
             make.top.equalTo(79)
             make.width.height.equalTo(37)
         }
         
-        view.addSubview(wheelProductCollection)
+        contentView.addSubview(wheelProductCollection)
         wheelProductCollection.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.height.equalTo(350)
+            make.height.equalTo(330)
             make.top.equalTo(titleSceen.snp.bottom).offset(37)
         }
         
-        view.addSubview(informParentView)
+        contentView.addSubview(informParentView)
         informParentView.snp.makeConstraints { make in
             make.top.equalTo(wheelProductCollection.snp.bottom).offset(7)
             make.leading.trailing.bottom.equalToSuperview()
@@ -238,35 +352,108 @@ class DetailViewController: UIViewController {
             make.centerY.equalTo(thirdStar)
         }
         
-        informParentView.addSubview(fifthStar)
-        fifthStar.snp.makeConstraints { make in
-            make.leading.equalTo(fourthStar.snp.trailing).offset(9)
-            make.centerY.equalTo(fourthStar)
-        }
         
-        fifthStar.addSubview(hideStar)
-        hideStar.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(17)
-            make.leading.equalTo(10)
-        }
-        
-        informParentView.addSubview(shopButton)
-        shopButton.snp.makeConstraints { make in
+        informParentView.addSubview(elementCollectionView)
+        elementCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(fourthStar.snp.bottom).offset(32)
+            make.height.equalTo(26)
             make.leading.equalTo(45)
-            make.top.equalTo(fifthStar.snp.bottom).offset(32)
+            make.trailing.equalTo(-45)
         }
         
-        informParentView.addSubview(detailButton)
-        detailButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalTo(shopButton)
+        informParentView.addSubview(cpuImage)
+        cpuImage.snp.makeConstraints { make in
+            make.leading.equalTo(45)
+            make.width.height.equalTo(28)
+            make.top.equalTo(elementCollectionView.snp.bottom).offset(35)
         }
         
-        informParentView.addSubview(featuresButton)
-        featuresButton.snp.makeConstraints { make in
-            make.leading.equalTo(detailButton.snp.trailing).offset(55)
-            make.centerY.equalTo(detailButton)
+        informParentView.addSubview(cpuTitle)
+        cpuTitle.snp.makeConstraints { make in
+            make.centerX.equalTo(cpuImage)
+            make.top.equalTo(cpuImage.snp.bottom).offset(5)
+        }
+        
+        informParentView.addSubview(cameraImage)
+        cameraImage.snp.makeConstraints { make in
+            make.leading.equalTo(cpuImage.snp.trailing).offset(74)
+            make.centerY.equalTo(cpuImage)
+            make.width.equalTo(28)
+            make.height.equalTo(22)
+        }
+        
+        informParentView.addSubview(cameraTitle)
+        cameraTitle.snp.makeConstraints { make in
+            make.centerY.equalTo(cpuTitle)
+            make.centerX.equalTo(cameraImage)
+        }
+        
+        informParentView.addSubview(ssdImage)
+        ssdImage.snp.makeConstraints { make in
+            make.width.equalTo(28)
+            make.height.equalTo(21)
+            make.centerY.equalTo(cameraImage)
+            make.leading.equalTo(cameraImage.snp.trailing).offset(64)
+        }
+        
+        informParentView.addSubview(ssdTitle)
+        ssdTitle.snp.makeConstraints { make in
+            make.centerX.equalTo(ssdImage)
+            make.centerY.equalTo(cameraTitle)
+        }
+        
+        informParentView.addSubview(sdcardImage)
+        sdcardImage.snp.makeConstraints { make in
+            make.leading.equalTo(ssdImage.snp.trailing).offset(68)
+            make.centerY.equalTo(ssdImage)
+        }
+        
+        informParentView.addSubview(sdcardTitle)
+        sdcardTitle.snp.makeConstraints { make in
+            make.centerY.equalTo(ssdTitle)
+            make.centerX.equalTo(sdcardImage)
+        }
+        
+        informParentView.addSubview(selectColorLabel)
+        selectColorLabel.snp.makeConstraints { make in
+            make.leading.equalTo(30)
+            make.top.equalTo(cameraTitle.snp.bottom).offset(29)
+        }
+        
+        informParentView.addSubview(brownButton)
+        brownButton.snp.makeConstraints { make in
+            make.leading.equalTo(35)
+            make.top.equalTo(selectColorLabel.snp.bottom).offset(15)
+            make.width.height.equalTo(40)
+        }
+        
+        informParentView.addSubview(darkButton)
+        darkButton.snp.makeConstraints { make in
+            make.leading.equalTo(brownButton.snp.trailing).offset(18)
+            make.width.height.equalTo(40)
+            make.centerY.equalTo(brownButton)
+        }
+        
+        informParentView.addSubview(selectGB128)
+        selectGB128.snp.makeConstraints { make in
+            make.leading.equalTo(darkButton.snp.trailing).offset(58)
+            make.centerY.equalTo(darkButton)
+            make.width.equalTo(71)
+            make.height.equalTo(30)
+        }
+        
+        informParentView.addSubview(selectGB256)
+        selectGB256.snp.makeConstraints { make in
+            make.leading.equalTo(selectGB128.snp.trailing).offset(20)
+            make.centerY.equalTo(selectGB128)
+        }
+        
+        informParentView.addSubview(addToCartButton)
+        addToCartButton.snp.makeConstraints { make in
+            make.leading.equalTo(29)
+            make.trailing.equalTo(-30)
+            make.height.equalTo(54)
+            make.bottom.equalTo(-58)
         }
     }
 }
@@ -281,18 +468,59 @@ extension DetailViewController: DetailView{
 
 extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return productDetail?.images.count ?? 0
+        if collectionView == wheelProductCollection{
+            return productDetail?.images.count ?? 0
+        }else{
+            return presenter?.elements.count ?? 0
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailWheelCollectionCell.identifier, for: indexPath) as? DetailWheelCollectionCell else { return DetailWheelCollectionCell()}
-        cell.backgroundColor = .orange
-        cell.fetchData(link: productDetail?.images[indexPath.row])
-        return cell
+        if collectionView == wheelProductCollection{
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailWheelCollectionCell.identifier, for: indexPath) as? DetailWheelCollectionCell else { return DetailWheelCollectionCell()}
+            cell.fetchData(link: productDetail?.images[indexPath.row])
+            return cell
+        }else{
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ElementsCustomCell.indentifier, for: indexPath) as? ElementsCustomCell else { return ElementsCustomCell()}
+            guard let items = presenter?.elements[indexPath.row] else { return ElementsCustomCell()}
+            cell.fetchData(title: items)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: wheelProductCollection.frame.width, height: wheelProductCollection.frame.height)
+        if collectionView == wheelProductCollection{
+            return CGSize(width: wheelProductCollection.frame.width, height: wheelProductCollection.frame.height)
+        }else{
+            return CGSize(width: elementCollectionView.frame.width / 3.3, height: 25)
+        }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? ElementsCustomCell {
+            cell.didSelected()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? ElementsCustomCell {
+            cell.cancelSelected()
+        }
+    }
+    
+}
+extension DetailViewController: UIScrollViewDelegate{
+    //MARK: Scroll Down, Hide Navbar
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+            //scrolling down
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        }
+        //MARK: Scroll Up, Show Navbar
+        else{
+            //scrolling up
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        }
+    }
 }
