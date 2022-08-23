@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class DetailWheelCollectionCell: UICollectionViewCell{
     
@@ -14,6 +15,8 @@ class DetailWheelCollectionCell: UICollectionViewCell{
     
     private lazy var productImageView: UIImageView = {
         let image = UIImageView()
+        image.layer.cornerRadius = 20
+        image.layer.masksToBounds = true
         return image
     }()
     
@@ -25,7 +28,8 @@ class DetailWheelCollectionCell: UICollectionViewCell{
     func setupConstraints(){
         contentView.addSubview(productImageView)
         productImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.bottom.centerX.centerY.equalToSuperview()
+            make.width.equalTo(226)
         }
     }
     
