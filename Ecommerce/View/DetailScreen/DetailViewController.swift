@@ -14,7 +14,7 @@ protocol DetailView: AnyObject{
 
 class DetailViewController: UIViewController {
     
-    var presenter: DetailPresenterView?
+    var presenter: DetailPresenter?
     
     var productDetail: ProductDetail? = nil
     
@@ -128,28 +128,14 @@ class DetailViewController: UIViewController {
         return view
     }()
     
-    private lazy var shopButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Shop", for: .normal)
-        button.setTitleColor(UIColor.customDarkBlue, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 20)
-        return button
-    }()
-    
-    private lazy var detailButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Details", for: .normal)
-        button.setTitleColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.5), for: .normal)
-        button.titleLabel?.font = UIFont(name: "Mark Pro", size: 20)
-        return button
-    }()
-    
-    private lazy var featuresButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Features", for: .normal)
-        button.setTitleColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.5), for: .normal)
-        button.titleLabel?.font = UIFont(name: "Mark Pro", size: 20)
-        return button
+    private lazy var elementCollectionView: UICollectionView  = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionV = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionV.register(ElementsCustomCell.self, forCellWithReuseIdentifier: ElementsCustomCell.indentifier)
+        collectionV.delegate = self
+        collectionV.dataSource = self
+        return collectionV
     }()
     
     override func viewDidLoad() {
@@ -251,23 +237,15 @@ class DetailViewController: UIViewController {
             make.leading.equalTo(10)
         }
         
-        informParentView.addSubview(shopButton)
-        shopButton.snp.makeConstraints { make in
-            make.leading.equalTo(45)
+        informParentView.addSubview(elementCollectionView)
+        elementCollectionView.snp.makeConstraints { make in
             make.top.equalTo(fifthStar.snp.bottom).offset(32)
+            make.height.equalTo(26)
+            make.leading.equalTo(45)
+            make.trailing.equalTo(-45)
         }
         
-        informParentView.addSubview(detailButton)
-        detailButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalTo(shopButton)
-        }
         
-        informParentView.addSubview(featuresButton)
-        featuresButton.snp.makeConstraints { make in
-            make.leading.equalTo(detailButton.snp.trailing).offset(55)
-            make.centerY.equalTo(detailButton)
-        }
     }
 }
 
@@ -281,18 +259,32 @@ extension DetailViewController: DetailView{
 
 extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return productDetail?.images.count ?? 0
+        if collectionView == wheelProductCollection{
+            return productDetail?.images.count ?? 0
+        }else{
+            return presenter?.elements.count ?? 0
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailWheelCollectionCell.identifier, for: indexPath) as? DetailWheelCollectionCell else { return DetailWheelCollectionCell()}
-        cell.backgroundColor = .orange
-        cell.fetchData(link: productDetail?.images[indexPath.row])
-        return cell
+        if collectionView == wheelProductCollection{
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailWheelCollectionCell.identifier, for: indexPath) as? DetailWheelCollectionCell else { return DetailWheelCollectionCell()}
+            cell.fetchData(link: productDetail?.images[indexPath.row])
+            return cell
+        }else{
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ElementsCustomCell.indentifier, for: indexPath) as? ElementsCustomCell else { return ElementsCustomCell()}
+            guard let items = presenter?.elements[indexPath.row] else { return ElementsCustomCell()}
+            cell.fetchData(title: items)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: wheelProductCollection.frame.width, height: wheelProductCollection.frame.height)
+        if collectionView == wheelProductCollection{
+            return CGSize(width: wheelProductCollection.frame.width, height: wheelProductCollection.frame.height)
+        }else{
+            return CGSize(width: elementCollectionView.frame.width / 3.3, height: 25)
+        }
     }
-    
 }

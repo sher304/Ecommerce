@@ -21,6 +21,9 @@ class DetailPresenter: DetailPresenterView{
         return Network()
     }()
     
+    
+    var elements = ["Shop", "Details", "Features"]
+    
     required init(view: DetailView) {
         self.view = view
     }
