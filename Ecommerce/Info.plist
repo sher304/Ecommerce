@@ -19,5 +19,12 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Mark Pro Medium.ttf</string>
+		<string>Mark Pro.ttf</string>
+		<string>Mark Pro Bold.ttf</string>
+		<string>Mark Pro Heavy.ttf</string>
+	</array>
 </dict>
 </plist>
