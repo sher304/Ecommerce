@@ -83,7 +83,6 @@ class DetailViewController: UIViewController {
     
     private lazy var productTitle: UILabel = {
         let label = UILabel()
-        label.text = "Galaxy Note 20 Ultra"
         label.textColor = UIColor.customDarkBlue
         label.font = UIFont(name: "Mark Pro Medium", size: 24)
         return label
@@ -154,7 +153,6 @@ class DetailViewController: UIViewController {
     
     private lazy var cpuTitle: UILabel = {
         let label = UILabel()
-        label.text = "Exynos 990"
         label.font = UIFont(name: "Mark Pro", size: 11)
         label.textColor = UIColor.customGray
         return label
@@ -169,7 +167,6 @@ class DetailViewController: UIViewController {
     
     private lazy var cameraTitle: UILabel = {
         let label = UILabel()
-        label.text = "108 + 12 mp"
         label.font = UIFont(name: "Mark Pro", size: 11)
         label.textColor = UIColor.customGray
         return label
@@ -184,7 +181,6 @@ class DetailViewController: UIViewController {
     
     private lazy var ssdTitle: UILabel = {
         let label = UILabel()
-        label.text = "8 GB"
         label.font = UIFont(name: "Mark Pro", size: 11)
         label.textColor = UIColor.customGray
         return label
@@ -199,7 +195,6 @@ class DetailViewController: UIViewController {
     
     private lazy var sdcardTitle: UILabel = {
         let label = UILabel()
-        label.text = "256 GB"
         label.font = UIFont(name: "Mark Pro", size: 11)
         label.textColor = UIColor.customGray
         return label
@@ -250,9 +245,9 @@ class DetailViewController: UIViewController {
     
     private lazy var addToCartButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Add to Cart                $1,500.00", for: .normal)
         button.backgroundColor = UIColor.customOrangeTint
         button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 20)
         return button
     }()
     
@@ -456,6 +451,17 @@ class DetailViewController: UIViewController {
             make.bottom.equalTo(-58)
         }
     }
+    
+    func setupDatas(){
+        DispatchQueue.main.async { [self] in
+            productTitle.text = productDetail?.title
+            cpuTitle.text = productDetail?.cpu
+            cameraTitle.text = productDetail?.camera
+            ssdTitle.text = productDetail?.ssd
+            sdcardTitle.text = productDetail?.sd
+            addToCartButton.setTitle("Add to Cart                 $\(productDetail?.price ?? Int())", for: .normal)
+        }
+    }
 }
 
 
@@ -463,6 +469,7 @@ extension DetailViewController: DetailView{
     func fetchData(productDetail: ProductDetail) {
         self.productDetail = productDetail
         wheelProductCollection.reloadData()
+        setupDatas()
     }
 }
 
