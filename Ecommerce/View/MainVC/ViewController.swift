@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 protocol MainView: AnyObject{
-    func reloadData()
     func showProducts(products: Product)
 }
 
@@ -109,7 +108,7 @@ class MainViewController: UIViewController {
         searchB.searchTextField.textColor = .black
         return searchB
     }()
-
+    
     private lazy var scanButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "scan"), for: .normal)
@@ -181,15 +180,22 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.viewDidLoad()
-        reloadData()
         seupScrollView()
+        setupNavBar()
     }
-
+    
     
     func seupScrollView(){
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         setupUI()
+    }
+    
+    func setupNavBar(){
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
     }
     
     func setupUI(){
@@ -295,20 +301,18 @@ class MainViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
     }
-
+    
 }
 
 extension MainViewController: MainView{
     func showProducts(products: Product) {
-        self.products = products
-        wheelCollectionImage.reloadData()
-        productsTableView.reloadData()
+        DispatchQueue.main.async { [self] in
+            self.products = products
+            wheelCollectionImage.reloadData()
+            productsTableView.reloadData()
+        }
     }
-    
-    func reloadData(){
-        wheelCollectionImage.reloadData()
-        productsTableView.reloadData()
-    }
+
 }
 
 extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{

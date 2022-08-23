@@ -9,6 +9,8 @@ import Foundation
 
 protocol DetailPresenterView: AnyObject{
     init(view: DetailView)
+    func viewDidLoad()
+    
 }
 
 class DetailPresenter: DetailPresenterView{
@@ -23,5 +25,10 @@ class DetailPresenter: DetailPresenterView{
         self.view = view
     }
     
+    func viewDidLoad() {
+        network.parseSingleElement { [self] data in
+            view?.fetchData(productDetail: data)
+        }
+    }
     
 }

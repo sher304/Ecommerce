@@ -17,8 +17,6 @@ class BestSellerTableCell: UITableViewCell{
     
     private lazy var collectionV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-
-        
         let collectionV = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionV.register(BestSellerCollectionCell.self, forCellWithReuseIdentifier: BestSellerCollectionCell.identifier)
         collectionV.delegate = self
@@ -29,6 +27,7 @@ class BestSellerTableCell: UITableViewCell{
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         setupUI()
     }
     
@@ -43,7 +42,6 @@ class BestSellerTableCell: UITableViewCell{
         self.products = products
         collectionV.reloadData()
     }
-
 }
 
 extension BestSellerTableCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
@@ -53,12 +51,8 @@ extension BestSellerTableCell: UICollectionViewDelegateFlowLayout, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BestSellerCollectionCell.identifier, for: indexPath) as? BestSellerCollectionCell else { return  BestSellerCollectionCell()}
-        
         guard let items = products?.bestSeller[indexPath.row] else { return BestSellerCollectionCell()}
-        
-        
         cell.fetchData(productImage: items.picture, title: items.title.description, price: items.priceWithoutDiscount.description, sale: items.discountPrice.description)
-        
         return cell
     }
     
@@ -70,4 +64,5 @@ extension BestSellerTableCell: UICollectionViewDelegateFlowLayout, UICollectionV
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 181, height: 227)
     }
+    
 }
