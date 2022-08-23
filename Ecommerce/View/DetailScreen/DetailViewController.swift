@@ -115,19 +115,6 @@ class DetailViewController: UIViewController {
         return imageV
     }()
     
-    private lazy var fifthStar: UIImageView = {
-        let imageV = UIImageView()
-        imageV.image = UIImage(systemName: "star.fill")
-        imageV.tintColor = UIColor.customYellowTint
-        return imageV
-    }()
-    
-    private lazy var hideStar: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    
     private lazy var elementCollectionView: UICollectionView  = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -135,6 +122,7 @@ class DetailViewController: UIViewController {
         collectionV.register(ElementsCustomCell.self, forCellWithReuseIdentifier: ElementsCustomCell.indentifier)
         collectionV.delegate = self
         collectionV.dataSource = self
+        collectionV.backgroundColor = .white
         return collectionV
     }()
     
@@ -224,22 +212,10 @@ class DetailViewController: UIViewController {
             make.centerY.equalTo(thirdStar)
         }
         
-        informParentView.addSubview(fifthStar)
-        fifthStar.snp.makeConstraints { make in
-            make.leading.equalTo(fourthStar.snp.trailing).offset(9)
-            make.centerY.equalTo(fourthStar)
-        }
-        
-        fifthStar.addSubview(hideStar)
-        hideStar.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(17)
-            make.leading.equalTo(10)
-        }
         
         informParentView.addSubview(elementCollectionView)
         elementCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(fifthStar.snp.bottom).offset(32)
+            make.top.equalTo(fourthStar.snp.bottom).offset(32)
             make.height.equalTo(26)
             make.leading.equalTo(45)
             make.trailing.equalTo(-45)
@@ -287,4 +263,17 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
             return CGSize(width: elementCollectionView.frame.width / 3.3, height: 25)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? ElementsCustomCell {
+            cell.didSelected()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? ElementsCustomCell {
+            cell.cancelSelected()
+        }
+    }
+    
 }

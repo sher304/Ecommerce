@@ -16,7 +16,7 @@ class ElementsCustomCell: UICollectionViewCell {
     private lazy var elementTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Mark Pro", size: 20)
-        label.textColor = UIColor.customDarkBlue
+        label.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         label.text = "Sow"
         label.textAlignment = .center
         return label
@@ -38,5 +38,23 @@ class ElementsCustomCell: UICollectionViewCell {
         DispatchQueue.main.async { [self] in
             elementTitle.text = title
         }
+    }
+    
+    func didSelected(){
+        elementTitle.textColor = UIColor.customDarkBlue
+        elementTitle.font = UIFont(name: "Mark Pro Medium", size: 20)
+        
+        let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue]
+        let underlineAttributedString = NSAttributedString(string: elementTitle.text!, attributes: underlineAttribute)
+        elementTitle.attributedText = underlineAttributedString
+
+    }
+    
+    func cancelSelected(){
+        elementTitle.font = UIFont(name: "Mark Pro", size: 20)
+        elementTitle.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        let underlineAttributedString = NSAttributedString(string: elementTitle.text!, attributes: .none)
+        elementTitle.attributedText = underlineAttributedString
+
     }
 }
