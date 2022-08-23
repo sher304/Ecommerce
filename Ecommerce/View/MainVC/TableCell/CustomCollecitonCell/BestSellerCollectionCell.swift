@@ -33,7 +33,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         let label = UILabel()
         label.text = "$1,047"
         label.font = UIFont(name: "Mark Pro Bold", size: 16)
-        label.textColor = UIColor(red: 1/255, green: 0, blue: 52/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         return label
     }()
     
@@ -41,7 +41,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         let label = UILabel()
         label.text = "$1,500"
         label.font = UIFont(name: "Mark Pro", size: 10)
-        label.textColor = UIColor(red: 204/255, green: 204/255, blue: 204/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         label.strikeThroughText()
         return label
     }()
@@ -49,7 +49,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
     private lazy var productTitle: UILabel = {
         let label = UILabel()
         label.text =  "Samsung Galaxy s20 Ultra"
-        label.textColor = UIColor(red: 1/255, green: 0, blue: 52/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         label.font = UIFont(name: "Mark Pro", size: 10)
         return label
     }()
@@ -57,7 +57,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
     private lazy var favoriteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.tintColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
+        button.tintColor = UIColor.customOrangeTint
         button.layer.cornerRadius = 25 / 2
         button.layer.masksToBounds = true
         button.backgroundColor = .white
