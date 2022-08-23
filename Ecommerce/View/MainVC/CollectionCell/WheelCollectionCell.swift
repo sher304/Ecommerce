@@ -16,7 +16,7 @@ class WheelCollectionCell: UICollectionViewCell {
     private lazy var productImage: UIImageView = {
         let imageV = UIImageView()
         imageV.image = UIImage(systemName: "person.fill")
-        imageV.contentMode = .scaleAspectFit
+        imageV.contentMode = .scaleAspectFill
         return imageV
     }()
     
@@ -107,10 +107,17 @@ class WheelCollectionCell: UICollectionViewCell {
         }
     }
     
-    func fetchData(image: String){
+    func fetchData(image: String, title: String, descr: String, isNew: Bool){
         DispatchQueue.main.async { [self] in
             productImage.kf.indicatorType = .activity
-            productImage.kf.setImage(with: URL(string: image.description), placeholder: nil, options: nil, completionHandler: nil)
+            productImage.kf.setImage(with: URL(string: image), placeholder: nil, options: nil, completionHandler: nil)
+            productName.text = title
+            shortDescription.text = descr
+            if isNew{
+                isNewParent.isHidden = false
+            }else{
+                isNewParent.isHidden = true
+            }
         }
     }
     

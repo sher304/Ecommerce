@@ -7,9 +7,10 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 import SnapKit
 
-class CustomCollectionCell: UICollectionViewCell{
+class BestSellerCollectionCell: UICollectionViewCell{
     
     static let identifier = "CustomCell"
     
@@ -41,6 +42,7 @@ class CustomCollectionCell: UICollectionViewCell{
         label.text = "$1,500"
         label.font = UIFont(name: "Mark Pro", size: 10)
         label.textColor = UIColor(red: 204/255, green: 204/255, blue: 204/255, alpha: 1)
+        label.strikeThroughText()
         return label
     }()
     
@@ -59,12 +61,14 @@ class CustomCollectionCell: UICollectionViewCell{
         button.layer.cornerRadius = 25 / 2
         button.layer.masksToBounds = true
         button.backgroundColor = .white
+        button.addTarget(self, action: #selector(didTappetFavButton), for: .touchUpInside)
         return button
     }()
     
     override func layoutSubviews() {
         super.layoutSubviews()
         setupConstraints()
+        
     }
     
     func setupConstraints(){
@@ -106,13 +110,34 @@ class CustomCollectionCell: UICollectionViewCell{
         }
     }
     
-    func fetchData(productImage: UIImage, title: String, price: String, sale: String){
-        DispatchQueue.main.async { [self] in
-            proudctImage.image = productImage
-            productTitle.text = title
-            productPrice.text = price
-            productSale.text = sale
+    func fetchData(productImage: String, title: String, price: String, sale: String){
+        DispatchQueue.main.async {
+            self.proudctImage.kf.indicatorType = .activity
+            self.proudctImage.kf.setImage(with: URL(string: productImage), placeholder: nil, options: nil, completionHandler: nil)
+            self.productTitle.text = title.description
+            self.productPrice.text = "$\(price)"
+            self.productSale.text = sale
         }
     }
     
+    var validator = true
+    @objc func didTappetFavButton(){
+        if validator{
+            favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            validator = false
+        }else{
+            favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            validator = true
+        }
+        
+    }
+}
+
+
+extension UILabel {
+  func strikeThroughText() {
+    let attributeString =  NSMutableAttributedString(string: self.text ?? "")
+    attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0,attributeString.length))
+    self.attributedText = attributeString
+  }
 }
