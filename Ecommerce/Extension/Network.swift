@@ -12,6 +12,7 @@ import Alamofire
 protocol NetworkService{
     func parseDatas(completion: @escaping(Product) -> Void)
     func parseSingleElement(completion: @escaping(ProductDetail) -> Void)
+    func parseCart(completion: @escaping(CartProduct) -> Void)
 }
 
 
@@ -39,4 +40,18 @@ class Network: NetworkService{
             }
         }
     }
+    
+    func parseCart(completion: @escaping(CartProduct) -> Void){
+        guard let url = URL(string: "https://run.mocky.io/v3/53539a72-3c5f-4f30-bbb1-6ca10d42c149") else { return }
+        AF.request(url).response { responce in
+            DispatchQueue.main.async {
+                guard let data = responce.data else {
+                    return }
+                guard let dedoderData = try? JSONDecoder().decode(CartProduct.self, from: data) else {
+                    return }
+                completion(dedoderData)
+            }
+        }
+    }
+    
 }

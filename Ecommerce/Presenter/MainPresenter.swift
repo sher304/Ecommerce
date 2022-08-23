@@ -10,6 +10,7 @@ import UIKit
 
 protocol MainPresenterView: AnyObject{
     init(view: MainView)
+    func viewDidLoad()
 
 }
 
