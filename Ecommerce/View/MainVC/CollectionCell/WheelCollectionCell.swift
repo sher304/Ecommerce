@@ -33,7 +33,7 @@ class WheelCollectionCell: UICollectionViewCell {
         button.setTitle("Buy now!", for: .normal)
         button.backgroundColor = .white
         button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 11)
-        button.setTitleColor(UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1), for: .normal)
+        button.setTitleColor(UIColor.customDarkBlue, for: .normal)
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
         return button
@@ -42,7 +42,7 @@ class WheelCollectionCell: UICollectionViewCell {
     
     private lazy var isNewParent: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
+        view.backgroundColor = UIColor.customOrangeTint
         view.layer.cornerRadius = 27 / 2
         view.layer.masksToBounds = true
         return view

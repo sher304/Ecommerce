@@ -25,7 +25,7 @@ class MainViewController: UIViewController {
         let scrollV = UIScrollView()
         scrollV.contentSize = contentSize
         scrollV.frame = view.bounds
-        scrollV.backgroundColor = UIColor(red: 229/255, green: 229/255, blue: 229/255, alpha: 1)
+        scrollV.backgroundColor = UIColor.customBackgroundWhite
         scrollV.contentInsetAdjustmentBehavior = .never
         scrollV.delegate = self
         return scrollV
@@ -34,7 +34,7 @@ class MainViewController: UIViewController {
     private lazy var contentView: UIView = {
         let view = UIView()
         view.frame.size = contentSize
-        view.backgroundColor = UIColor(red: 229/255, green: 229/255, blue: 229/255, alpha: 1)
+        view.backgroundColor = UIColor.customBackgroundWhite
         return view
     }()
     
@@ -48,7 +48,7 @@ class MainViewController: UIViewController {
     private lazy var locationTitle: UILabel = {
         let label = UILabel()
         label.text = "Zihuatanejo, Gro"
-        label.textColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         label.font = UIFont(name: "Mark Pro", size: 15)
         return label
     }()
@@ -63,7 +63,7 @@ class MainViewController: UIViewController {
     private lazy var filterButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "filter"), for: .normal)
-        button.tintColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        button.tintColor = UIColor.customDarkBlue
         return button
     }()
     
@@ -71,13 +71,13 @@ class MainViewController: UIViewController {
         let label = UILabel()
         label.text = "Select Category"
         label.font = UIFont(name: "Mark Pro Bold", size: 25)
-        label.textColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         return label
     }()
     
     private lazy var viewAllTitle: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
+        label.textColor = UIColor.customOrangeTint
         label.font = UIFont(name: "Mark Pro", size: 15)
         label.text = "view all"
         return label
@@ -98,7 +98,7 @@ class MainViewController: UIViewController {
     
     private lazy var searchBar: UISearchBar = {
         let searchB = UISearchBar()
-        searchB.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        searchB.backgroundColor = .white
         searchB.searchTextField.leftView?.tintColor = .orange
         searchB.autocorrectionType = .no
         searchB.backgroundImage = UIImage()
@@ -109,33 +109,26 @@ class MainViewController: UIViewController {
         searchB.searchTextField.textColor = .black
         return searchB
     }()
-    
-    private lazy var scanView: UIImageView = {
-        let imageV = UIImageView()
-        imageV.image = UIImage(named: "scan")
-        imageV.contentMode = .scaleAspectFit
-        return imageV
-    }()
-    
-    private lazy var scanViewBg: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 34 / 2
-        view.layer.masksToBounds = true
-        view.backgroundColor = .orange
-        return view
+
+    private lazy var scanButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "scan"), for: .normal)
+        button.layer.cornerRadius = 34 / 2
+        button.backgroundColor = UIColor.customOrangeTint
+        return button
     }()
     
     private lazy var salesLabel: UILabel = {
         let label = UILabel()
         label.text = "Hot sales"
         label.font = UIFont(name: "Mark Pro Bold", size: 25)
-        label.textColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         return label
     }()
     
     private lazy var seeMoreTitle: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
+        label.textColor = UIColor.customOrangeTint
         label.font = UIFont(name: "Mark Pro", size: 15)
         label.text = "see more"
         return label
@@ -163,13 +156,13 @@ class MainViewController: UIViewController {
         let label = UILabel()
         label.text = "Best Seller"
         label.font = UIFont(name: "Mark Pro Bold", size: 25)
-        label.textColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         return label
     }()
     
     private lazy var seeMoreSecondTitle: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
+        label.textColor = UIColor.customOrangeTint
         label.font = UIFont(name: "Mark Pro", size: 15)
         label.text = "see more"
         return label
@@ -189,14 +182,9 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         presenter.viewDidLoad()
         reloadData()
-        setupNavBar()
-    }
-    
-    func setupNavBar(){
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
         seupScrollView()
     }
+
     
     func seupScrollView(){
         view.addSubview(scrollView)
@@ -261,16 +249,11 @@ class MainViewController: UIViewController {
             make.width.equalTo(300)
         }
         
-        contentView.addSubview(scanViewBg)
-        scanViewBg.snp.makeConstraints { make in
+        contentView.addSubview(scanButton)
+        scanButton.snp.makeConstraints { make in
             make.leading.equalTo(searchBar.snp.trailing).offset(11)
             make.width.height.equalTo(34)
             make.centerY.equalTo(searchBar)
-        }
-        
-        scanViewBg.addSubview(scanView)
-        scanView.snp.makeConstraints { make in
-            make.centerY.centerX.equalToSuperview()
         }
         
         contentView.addSubview(salesLabel)
@@ -312,6 +295,7 @@ class MainViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
     }
+
 }
 
 extension MainViewController: MainView{
@@ -381,7 +365,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BestSellerTableCell()
-        cell.backgroundColor = .red
         guard let items = products else { return BestSellerTableCell()}
         cell.fetchProducts(products: items)
         return cell

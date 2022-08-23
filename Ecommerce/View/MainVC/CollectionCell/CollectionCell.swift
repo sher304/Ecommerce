@@ -32,7 +32,7 @@ class CollecitonCell: UICollectionViewCell{
         let label = UILabel()
         label.text = "Computer"
         label.font = UIFont(name: "Mark Pro", size: 12)
-        label.textColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        label.textColor = UIColor.customDarkBlue
         return label
     }()
     
@@ -70,14 +70,14 @@ class CollecitonCell: UICollectionViewCell{
     
     func didSelected(indx: Int){
         iconImage.tintColor = .white
-        backgroundV.backgroundColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
-        categoryTitle.textColor = UIColor(red: 255/255, green: 110/255, blue: 78/255, alpha: 1)
+        backgroundV.backgroundColor = UIColor.customOrangeTint
+        categoryTitle.textColor = UIColor.customOrangeTint
         
     }
     
     func didDeselect(indx: Int){
         backgroundV.backgroundColor = .white
         iconImage.tintColor = UIColor(red: 179/255, green: 179/255, blue: 199/255, alpha: 1)
-        categoryTitle.textColor = UIColor(red: 1/255, green: 0/255, blue: 53/255, alpha: 1)
+        categoryTitle.textColor = UIColor.customDarkBlue
     }
 }

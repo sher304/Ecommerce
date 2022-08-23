@@ -23,7 +23,7 @@ class BestSellerTableCell: UITableViewCell{
         collectionV.register(BestSellerCollectionCell.self, forCellWithReuseIdentifier: BestSellerCollectionCell.identifier)
         collectionV.delegate = self
         collectionV.dataSource = self
-        collectionV.backgroundColor = UIColor(red: 229/255, green: 229/255, blue: 229/255, alpha: 1)
+        collectionV.backgroundColor = UIColor.customBackgroundWhite
         return collectionV
     }()
     
@@ -64,7 +64,7 @@ extension BestSellerTableCell: UICollectionViewDelegateFlowLayout, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets
     {
-        return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 10) // top, left, bottom, right
+        return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 10)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
