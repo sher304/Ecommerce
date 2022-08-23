@@ -106,6 +106,7 @@ class MainViewController: UIViewController {
         searchB.layer.cornerRadius = 15
         searchB.layer.masksToBounds = true
         searchB.placeholder = "Search"
+        searchB.searchTextField.textColor = .black
         return searchB
     }()
     
@@ -176,10 +177,11 @@ class MainViewController: UIViewController {
     
     private lazy var productsTableView: UITableView = {
         let tableV = UITableView()
-        tableV.register(CustomTableCell.self, forCellReuseIdentifier: CustomTableCell.identifier)
+        tableV.register(BestSellerTableCell.self, forCellReuseIdentifier: BestSellerTableCell.identifier)
         tableV.delegate = self
         tableV.dataSource = self
         tableV.backgroundColor = contentView.backgroundColor
+        tableV.showsVerticalScrollIndicator = false
         return tableV
     }()
     
@@ -316,10 +318,12 @@ extension MainViewController: MainView{
     func showProducts(products: Product) {
         self.products = products
         wheelCollectionImage.reloadData()
+        productsTableView.reloadData()
     }
     
     func reloadData(){
         wheelCollectionImage.reloadData()
+        productsTableView.reloadData()
     }
 }
 
@@ -343,8 +347,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return cell
         }else{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WheelCollectionCell.identifier, for: indexPath) as? WheelCollectionCell else { return WheelCollectionCell()}
-            let images = products?.homeStore[indexPath.row].picture
-            cell.fetchData(image: images ?? String())
+            let images = products?.homeStore[indexPath.row]
+            cell.fetchData(image: images?.picture ?? String(), title: images?.title ?? String(), descr: images?.subtitle ?? String(), isNew: images?.isNew ?? Bool())
             return cell
         }
     }
@@ -376,8 +380,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = CustomTableCell()
+        let cell = BestSellerTableCell()
         cell.backgroundColor = .red
+        guard let items = products else { return BestSellerTableCell()}
+        cell.fetchProducts(products: items)
         return cell
     }
     
