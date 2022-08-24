@@ -16,7 +16,7 @@ class CartViewController: UIViewController {
 
     var presenter: CartPresenter!
     
-    var cartProducts: CartProduct! = nil
+    var cartProducts: CartProduct? = nil
     
     private lazy var backButton: UIButton = {
         let button = UIButton()
@@ -65,6 +65,9 @@ class CartViewController: UIViewController {
         table.register(CartTableCell.self, forCellReuseIdentifier: CartTableCell.identifier)
         table.delegate = self
         table.dataSource = self
+        table.backgroundColor = contentView.backgroundColor
+//        table.backgroundColor = .red
+        table.separatorStyle = .none
         return table
     }()
     
@@ -116,7 +119,7 @@ class CartViewController: UIViewController {
         contentView.addSubview(productsTableView)
         productsTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(-150)
+            make.bottom.equalTo(-100)
             make.top.equalTo(90)
         }
     }
@@ -124,19 +127,21 @@ class CartViewController: UIViewController {
 
 extension CartViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cartProducts.basket.count
+        return cartProducts?.basket.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = CartTableCell()
-        let items = cartProducts.basket[indexPath.row]
+        guard let items = cartProducts?.basket[indexPath.row] else { return CartTableCell()}
         cell.fetchData(link: items.images, title: items.title, price: items.price)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 120
     }
+
+    
 }
 
 extension CartViewController: CartView{

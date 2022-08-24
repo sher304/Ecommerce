@@ -28,7 +28,6 @@ class CartPresenter: CartPresenterView{
     
     func viewDidLoad(){
         network.parseCart { [self] datas in
-            print(datas)
             view?.fetchData(cartProducts: datas)
         }
     }
