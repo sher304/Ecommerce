@@ -79,6 +79,7 @@ class CartTableCell: UITableViewCell{
         button.tintColor = UIColor(red: 54/255, green: 54/255, blue: 77/255, alpha: 1)
         return button
     }()
+  
     
     func setupView(){
         contentView.backgroundColor = UIColor.customDarkBlue

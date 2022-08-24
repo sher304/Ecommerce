@@ -18,6 +18,26 @@ class CartViewController: UIViewController {
     
     var cartProducts: CartProduct? = nil
     
+    private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + CGFloat(cartProducts?.basket.count ?? 0 * 120) + 100)
+    
+    
+    private lazy var scrollView: UIScrollView = {
+        let scrollV = UIScrollView()
+        scrollV.contentSize = contentSize
+        scrollV.frame = view.bounds
+        scrollV.backgroundColor = UIColor.customBackgroundWhite
+        scrollV.contentInsetAdjustmentBehavior = .never
+        scrollV.delegate = self
+        return scrollV
+    }()
+    
+    private lazy var mainContentView: UIView = {
+        let view = UIView()
+        view.frame.size = contentSize
+        view.backgroundColor = UIColor.customBackgroundWhite
+        return view
+    }()
+    
     private lazy var backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
@@ -71,46 +91,105 @@ class CartViewController: UIViewController {
         return table
     }()
     
+    
+    private lazy var upLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 1, alpha: 0.25)
+        return view
+    }()
+    
+    private lazy var totalLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Total"
+        label.textColor = .white
+        label.font = UIFont(name: "Mark Pro", size: 15)
+        return label
+    }()
+    
+    private lazy var totalInfromLabel: UILabel = {
+        let label = UILabel()
+        label.text = "$6,000 us"
+        label.textColor = .white
+        label.font = UIFont(name: "Mark Pro Bold", size: 15)
+        return label
+    }()
+    
+    private lazy var deliveryLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Delivery"
+        label.textColor = .white
+        label.font = UIFont(name: "Mark Pro", size: 15)
+        return label
+    }()
+    
+    private lazy var deliveryInfromLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Free"
+        label.textColor = .white
+        label.font = UIFont(name: "Mark Pro Bold", size: 15)
+        return label
+    }()
+    
+    private lazy var underLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 1, alpha: 0.25)
+        return view
+    }()
+    
+    private lazy var checkoutButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.customOrangeTint
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 20)
+        button.setTitle("Checkout", for: .normal)
+        return button
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.viewDidLoad()
-        setpuConstraints()
+        setupScrollView()
     }
     
-    func setupView(){
+    func setupScrollView(){
         view.backgroundColor = UIColor.customBackgroundWhite
+        view.addSubview(scrollView)
+        scrollView.addSubview(mainContentView)
+        setpuConstraints()
+        setupNavBar()
     }
+    
+   
     
     func setpuConstraints(){
-        setupView()
-        
-        view.addSubview(backButton)
+        mainContentView.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.leading.equalTo(42)
             make.top.equalTo(79)
             make.width.height.equalTo(37)
         }
         
-        view.addSubview(mapButton)
+        mainContentView.addSubview(mapButton)
         mapButton.snp.makeConstraints { make in
             make.trailing.equalTo(-46)
             make.top.equalTo(79)
             make.width.height.equalTo(37)
         }
         
-        view.addSubview(addAddressTitle)
+        mainContentView.addSubview(addAddressTitle)
         addAddressTitle.snp.makeConstraints { make in
             make.trailing.equalTo(mapButton.snp.leading).offset(-9)
             make.centerY.equalTo(mapButton)
         }
         
-        view.addSubview(mayCartTitle)
+        mainContentView.addSubview(mayCartTitle)
         mayCartTitle.snp.makeConstraints { make in
             make.leading.equalTo(42)
             make.top.equalTo(backButton.snp.bottom).offset(50)
         }
         
-        view.addSubview(contentView)
+        mainContentView.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.top.equalTo(mayCartTitle.snp.bottom).offset(50)
             make.leading.trailing.bottom.equalToSuperview()
@@ -119,10 +198,64 @@ class CartViewController: UIViewController {
         contentView.addSubview(productsTableView)
         productsTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(-100)
+            make.bottom.equalTo(-230)
             make.top.equalTo(90)
         }
+        
+        contentView.addSubview(upLine)
+        upLine.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+            make.top.equalTo(productsTableView.snp.bottom)
+        }
+        
+        contentView.addSubview(totalLabel)
+        totalLabel.snp.makeConstraints { make in
+            make.leading.equalTo(55)
+            make.top.equalTo(upLine.snp.bottom).offset(15)
+        }
+        
+        contentView.addSubview(totalInfromLabel)
+        totalInfromLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(totalLabel)
+            make.trailing.equalTo(-35)
+        }
+        
+        contentView.addSubview(deliveryLabel)
+        deliveryLabel.snp.makeConstraints { make in
+            make.top.equalTo(totalLabel.snp.bottom).offset(12)
+            make.leading.equalTo(55)
+        }
+        
+        contentView.addSubview(deliveryInfromLabel)
+        deliveryInfromLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(deliveryLabel)
+            make.leading.equalTo(totalInfromLabel.snp.leading)
+        }
+        
+        contentView.addSubview(underLine)
+        underLine.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(deliveryLabel.snp.bottom).offset(26)
+            make.height.equalTo(1)
+        }
+        
+        contentView.addSubview(checkoutButton)
+        checkoutButton.snp.makeConstraints { make in
+            make.leading.equalTo(44)
+            make.trailing.equalTo(-44)
+            make.height.height.equalTo(54)
+            make.top.equalTo(underLine.snp.bottom).offset(27)
+        }
     }
+    
+    func setupNavBar(){
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
+    }
+    
 }
 
 extension CartViewController: UITableViewDelegate, UITableViewDataSource{
@@ -149,6 +282,21 @@ extension CartViewController: CartView{
         DispatchQueue.main.async {
             self.cartProducts = cartProducts
             self.productsTableView.reloadData()
+        }
+    }
+}
+
+extension CartViewController: UIScrollViewDelegate{
+    //MARK: Scroll Down, Hide Navbar
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+            //scrolling down
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        }
+        //MARK: Scroll Up, Show Navbar
+        else{
+            //scrolling up
+            navigationController?.setNavigationBarHidden(false, animated: true)
         }
     }
 }
