@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ToosieSlideVersionNumber;
-FOUNDATION_EXPORT const unsigned char ToosieSlideVersionString[];
+FOUNDATION_EXPORT double iOSDropDownVersionNumber;
+FOUNDATION_EXPORT const unsigned char iOSDropDownVersionString[];
 

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7F513D2B18CEDBEC0618BA506501156E"
-               BuildableName = "ToosieSlide.framework"
-               BlueprintName = "ToosieSlide"
+               BlueprintIdentifier = "3C76CE6CD60B1CE55A174F03CC59AE17"
+               BuildableName = "iOSDropDown.framework"
+               BlueprintName = "iOSDropDown"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
