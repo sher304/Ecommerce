@@ -305,7 +305,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func filterTapped(){
-        let vc = FilterViewController()
+        let vc = FilterBuilder.build()
         present(vc, animated: true, completion: nil)
     }
     

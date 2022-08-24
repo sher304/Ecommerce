@@ -9,8 +9,15 @@ import UIKit
 import iOSDropDown
 import SnapKit
 
+protocol FilterView: AnyObject{
+    func fetchProducts(product: Product)
+}
+
 class FilterViewController: UIViewController {
     
+    var presenter: FilterPresenter!
+    
+    var products: Product! = nil
     
     private lazy var contentView: UIView = {
         let view = UIView()
@@ -24,7 +31,7 @@ class FilterViewController: UIViewController {
         button.backgroundColor = UIColor.customDarkBlue
         button.layer.cornerRadius = 10
         button.tintColor = .white
-        
+        button.addTarget(self, action: #selector(tabButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -34,6 +41,7 @@ class FilterViewController: UIViewController {
         button.backgroundColor = UIColor.customOrangeTint
         button.layer.cornerRadius = 10
         button.setTitle("Done", for: .normal)
+        button.addTarget(self, action: #selector(tabButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -65,6 +73,7 @@ class FilterViewController: UIViewController {
         let menu = DropDown()
         menu.rowBackgroundColor = UIColor.customBackgroundWhite
         menu.arrowColor = UIColor.customGray
+        menu.selectedRowColor = UIColor.customOrangeTint
         menu.textColor = .black
         return menu
     }()
@@ -81,6 +90,7 @@ class FilterViewController: UIViewController {
         let menu = DropDown()
         menu.rowBackgroundColor = UIColor.customBackgroundWhite
         menu.arrowColor = UIColor.customGray
+        menu.selectedRowColor = UIColor.customOrangeTint
         menu.textColor = .black
         return menu
     }()
@@ -97,6 +107,7 @@ class FilterViewController: UIViewController {
         let menu = DropDown()
         menu.rowBackgroundColor = UIColor.customBackgroundWhite
         menu.arrowColor = UIColor.customGray
+        menu.selectedRowColor = UIColor.customOrangeTint
         menu.textColor = .black
         return menu
     }()
@@ -119,12 +130,16 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.reloadData()
         setupConstraints()
     }
     
     func setDropDown(){
-        barndDropDownMenu.optionArray = ["Option 1", "Option 2", "Option 3"]
-        barndDropDownMenu.optionIds = [1,23,54,22]
+        
+        let items = products.bestSeller
+        barndDropDownMenu.optionArray = [items.description]
+//        barndDropDownMenu.optionArray = ["Option 1", "Option 2", "Option 3"]
+    
         barndDropDownMenu.didSelect { selectedText, index, id in
             self.barndDropDownMenu.text = selectedText
         }
@@ -222,5 +237,20 @@ class FilterViewController: UIViewController {
             make.trailing.equalTo(-20)
             make.top.bottom.equalToSuperview()
         }
+    }
+    
+    @objc func tabButtonTapped(btn: UIButton){
+        if btn == dismissButton{
+            dismiss(animated: true, completion: nil)
+        }else{
+            dismiss(animated: true, completion: nil)
+        }
+    }
+}
+
+extension FilterViewController: FilterView{
+    func fetchProducts(product: Product) {
+        self.products = product
+        sizeDropDownMenu.reloadInputViews()
     }
 }
