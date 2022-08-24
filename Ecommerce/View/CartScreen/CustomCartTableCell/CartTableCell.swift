@@ -39,6 +39,8 @@ class CartTableCell: UITableViewCell{
         return label
     }()
     
+    var presenter: CartPresenter?
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         setupCosntraints()
@@ -55,6 +57,7 @@ class CartTableCell: UITableViewCell{
         let button = UIButton()
         button.setImage(UIImage(systemName: "minus"), for: .normal)
         button.tintColor = .white
+        button.addTarget(self, action: #selector(productTappet), for: .touchUpInside)
         return button
     }()
     
@@ -70,6 +73,7 @@ class CartTableCell: UITableViewCell{
         let button = UIButton()
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.tintColor = .white
+        button.addTarget(self, action: #selector(productTappet), for: .touchUpInside)
         return button
     }()
     
@@ -153,4 +157,17 @@ class CartTableCell: UITableViewCell{
             productPrice.text = "$\(price)"
         }
     }
+    
+    @objc func productTappet(btn: UIButton){
+        if btn == subtractButton{
+            guard var price = Int(countLabel.text ?? String()) else { return }
+            price -= 1
+            countLabel.text = price.description
+        }else{
+            guard var price = Int(countLabel.text ?? String()) else { return }
+            price += 1
+            countLabel.text = price.description
+        }
+    }
+
 }

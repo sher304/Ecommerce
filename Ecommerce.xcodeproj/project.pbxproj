@@ -224,6 +224,7 @@
 		60C8095E28B4D0A700335DED /* CartScreen */ = {
 			isa = PBXGroup;
 			children = (
+				60C8097C28B52FAC00335DED /* CustomCartTableCell */,
 				60C8095F28B4D0C900335DED /* CartViewController.swift */,
 				60C8097828B52BC800335DED /* CartBuilder.swift */,
 			);
@@ -233,7 +234,6 @@
 		60C8096328B4E1E600335DED /* DetailScreen */ = {
 			isa = PBXGroup;
 			children = (
-				60C8097C28B52FAC00335DED /* CustomCartTableCell */,
 				60C8097528B508FE00335DED /* CustomElementsCollectionCell */,
 				60C8097028B4F78F00335DED /* CustomDetailCollectionCell */,
 				60C8096628B4E22400335DED /* DetailViewController.swift */,

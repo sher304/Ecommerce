@@ -11,7 +11,6 @@ import Foundation
 protocol CartPresenterView{
     init(view: CartView)
     func viewDidLoad()
-
 }
 
 class CartPresenter: CartPresenterView{
@@ -31,4 +30,5 @@ class CartPresenter: CartPresenterView{
             view?.fetchData(cartProducts: datas)
         }
     }
+    
 }

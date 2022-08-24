@@ -13,7 +13,7 @@ protocol CartView: AnyObject{
 }
 
 class CartViewController: UIViewController {
-
+    
     var presenter: CartPresenter!
     
     var cartProducts: CartProduct? = nil
@@ -86,7 +86,6 @@ class CartViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.backgroundColor = contentView.backgroundColor
-//        table.backgroundColor = .red
         table.separatorStyle = .none
         return table
     }()
@@ -159,8 +158,6 @@ class CartViewController: UIViewController {
         setpuConstraints()
         setupNavBar()
     }
-    
-   
     
     func setpuConstraints(){
         mainContentView.addSubview(backButton)
@@ -273,7 +270,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
-
+    
     
 }
 
