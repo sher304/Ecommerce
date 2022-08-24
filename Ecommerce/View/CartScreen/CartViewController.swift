@@ -44,6 +44,7 @@ class CartViewController: UIViewController {
         button.backgroundColor = UIColor.customDarkBlue
         button.layer.cornerRadius = 10
         button.tintColor = .white
+        button.addTarget(self, action: #selector(backButtonTappet), for: .touchUpInside)
         return button
     }()
     
@@ -251,6 +252,17 @@ class CartViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
+    
+        navigationController?.navigationBar.tintColor = UIColor.customBackgroundWhite
+        navigationController?.navigationBar.topItem?.title = ""
+    }
+    
+    @objc func backButtonTappet(){
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func cartScreenTapp(){
+        
     }
     
 }
