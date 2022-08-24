@@ -10,6 +10,7 @@ import SnapKit
 
 protocol DetailView: AnyObject{
     func fetchData(productDetail: ProductDetail)
+    func sendToCartScreen()
 }
 
 class DetailViewController: UIViewController {
@@ -51,6 +52,7 @@ class DetailViewController: UIViewController {
         button.backgroundColor = UIColor.customDarkBlue
         button.layer.cornerRadius = 10
         button.tintColor = .white
+
         return button
     }()
     
@@ -60,6 +62,7 @@ class DetailViewController: UIViewController {
         button.tintColor = .white
         button.backgroundColor = UIColor.customOrangeTint
         button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(addTocartTappet), for: .touchUpInside)
         return button
     }()
     
@@ -68,13 +71,11 @@ class DetailViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        
+
         let collectionV = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionV.register(DetailWheelCollectionCell.self, forCellWithReuseIdentifier: DetailWheelCollectionCell.identifier)
         collectionV.isPagingEnabled = true
         collectionV.showsHorizontalScrollIndicator = false
-        collectionV.layer.cornerRadius = 25
-        collectionV.layer.masksToBounds = true
         collectionV.backgroundColor = view.backgroundColor
         collectionV.delegate = self
         collectionV.dataSource = self
@@ -254,6 +255,7 @@ class DetailViewController: UIViewController {
         button.backgroundColor = UIColor.customOrangeTint
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 20)
+        button.addTarget(self, action: #selector(addTocartTappet), for: .touchUpInside)
         return button
     }()
     
@@ -275,6 +277,9 @@ class DetailViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(), landscapeImagePhone: UIImage(), style: .done, target: nil, action: nil)
     }
     
     
@@ -508,6 +513,10 @@ class DetailViewController: UIViewController {
             validator = true
         }
     }
+    
+    @objc func addTocartTappet(){
+        sendToCartScreen()
+    }
 }
 
 
@@ -516,6 +525,11 @@ extension DetailViewController: DetailView{
         self.productDetail = productDetail
         wheelProductCollection.reloadData()
         setupDatas()
+    }
+    
+    func sendToCartScreen(){
+        let vc = CartBuilder.build()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
