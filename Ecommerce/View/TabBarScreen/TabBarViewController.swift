@@ -12,14 +12,18 @@ class TabBarViewController: UITabBarController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         generateTabBar()
         setTabBarConstaints()
+        setupNavBar()
     }
     
     
     private func generateTabBar(){
-        viewControllers = [generateVC(vc: MainBuilder.build(), title: "Home", image: UIImage(systemName: "house.fill")),
-                   generateVC(vc: CartViewController(), title: "Cart", image: UIImage(systemName: "cart.fill"))
+        viewControllers = [generateVC(vc: MainBuilder.build(), title: "Explorer", image: UIImage(systemName: "circle.fill")),
+                           generateVC(vc: CartBuilder.build(), title: "", image: UIImage(systemName: "cart.fill")),
+                           generateVC(vc: MainBuilder.build(), title: "", image: UIImage(systemName: "heart")),
+                           generateVC(vc: MainBuilder.build(), title: "", image: UIImage(systemName: "person"))
         ]
     }
     
@@ -42,4 +46,13 @@ class TabBarViewController: UITabBarController{
         tabBar.itemPositioning = .centered
     }
     
+    func setupNavBar(){
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
+        navigationController?.navigationBar.tintColor = UIColor.customBackgroundWhite
+        navigationController?.navigationBar.topItem?.title = ""
+    }
+
 }
