@@ -253,7 +253,6 @@ class FilterViewController: UIViewController {
             }
             self.brandDropDownMenu.optionArray = brands
             self.priseDropDownMenu.optionArray = prices
-            print("data \(brands)")
         }
     }
     
