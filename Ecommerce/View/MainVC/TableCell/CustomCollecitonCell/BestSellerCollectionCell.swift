@@ -12,8 +12,10 @@ import SnapKit
 
 class BestSellerCollectionCell: UICollectionViewCell{
     
+    //MARK: Indetifier of Collection Cell
     static let identifier = "CustomCell"
     
+    //MARK: Collection Background
     private lazy var parentBg: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -22,6 +24,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         return view
     }()
     
+    //MARK: Product image
     private lazy var proudctImage: UIImageView = {
         let imageV = UIImageView()
         imageV.image = UIImage(systemName: "person.fill")
@@ -29,6 +32,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         return imageV
     }()
     
+    //MARK: Product price
     private lazy var productPrice: UILabel = {
         let label = UILabel()
         label.text = "$1,047"
@@ -37,6 +41,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         return label
     }()
     
+    //MARK: Product discount size
     private lazy var productSale: UILabel = {
         let label = UILabel()
         label.text = "$1,500"
@@ -46,6 +51,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         return label
     }()
     
+    //MARK: Product Title
     private lazy var productTitle: UILabel = {
         let label = UILabel()
         label.text =  "Samsung Galaxy s20 Ultra"
@@ -54,6 +60,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         return label
     }()
     
+    //MARK: Favorite Button
     private lazy var favoriteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart"), for: .normal)
@@ -71,6 +78,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         
     }
     
+    //MARK: Setup Constraints
     func setupConstraints(){
         contentView.addSubview(parentBg)
         parentBg.snp.makeConstraints { make in
@@ -110,6 +118,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         }
     }
     
+    //MARK: Fetch Data and set to Screen
     func fetchData(productImage: String, title: String, price: String, sale: String){
         DispatchQueue.main.async {
             self.proudctImage.kf.indicatorType = .activity
@@ -120,6 +129,7 @@ class BestSellerCollectionCell: UICollectionViewCell{
         }
     }
     
+    //MARK: IsFavorite Selected
     var validator = true
     @objc func didTappetFavButton(){
         if validator{

@@ -36,6 +36,7 @@ class FilterViewController: UIViewController {
         return button
     }()
     
+    //MARK: Done
     private lazy var doneButton: UIButton = {
         let button = UIButton()
         button.tintColor = .white
@@ -46,6 +47,7 @@ class FilterViewController: UIViewController {
         return button
     }()
     
+    //MARK: Filter Title
     private lazy var filterTitle: UILabel = {
         let label = UILabel()
         label.text = "Filter options"
@@ -54,6 +56,7 @@ class FilterViewController: UIViewController {
         return label
     }()
     
+    //MARK: Brand Title
     private lazy var brandTitle: UILabel = {
         let label = UILabel()
         label.text = "Brand"
@@ -62,6 +65,7 @@ class FilterViewController: UIViewController {
         return label
     }()
     
+    //MARK: Brand Drop Down Menu Parent
     private lazy var brandDropDownParent: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1
@@ -70,6 +74,7 @@ class FilterViewController: UIViewController {
         return view
     }()
     
+    //MARK: Brand Drop Down Menu
     private lazy var brandDropDownMenu: DropDown = {
         let menu = DropDown()
         menu.rowBackgroundColor = UIColor.customBackgroundWhite
@@ -81,6 +86,7 @@ class FilterViewController: UIViewController {
         return menu
     }()
     
+    //MARK: Price Drop Down Menu Parent
     private lazy var priseDropDownParent: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1
@@ -89,6 +95,7 @@ class FilterViewController: UIViewController {
         return view
     }()
     
+    //MARK: Price Drop Down Menu
     private lazy var priseDropDownMenu: DropDown = {
         let menu = DropDown()
         menu.rowBackgroundColor = UIColor.customBackgroundWhite
@@ -100,6 +107,7 @@ class FilterViewController: UIViewController {
         return menu
     }()
     
+    //MARK: Size Drop Down Menu Parent
     private lazy var sizeDropDownParent: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1
@@ -108,6 +116,7 @@ class FilterViewController: UIViewController {
         return view
     }()
     
+    //MARK: Size Drop Down Menu
     private lazy var sizeDropDownMenu: DropDown = {
         let menu = DropDown()
         menu.rowBackgroundColor = UIColor.customBackgroundWhite
@@ -119,6 +128,7 @@ class FilterViewController: UIViewController {
         return menu
     }()
     
+    //MARK: Price Title
     private lazy var priceTitle: UILabel = {
         let label = UILabel()
         label.text = "Price"
@@ -127,6 +137,7 @@ class FilterViewController: UIViewController {
         return label
     }()
     
+    //MARK: Size Title
     private lazy var sizeTitle: UILabel = {
         let label = UILabel()
         label.text = "Size"
@@ -141,13 +152,14 @@ class FilterViewController: UIViewController {
         setupConstraints()
     }
     
+    //MARK: DropDownMenu Options
     func setDropDown(){
-    
         brandDropDownMenu.didSelect { selectedText, index, id in
             self.brandDropDownMenu.text = selectedText
         }
     }
     
+    //MARK: Set Up constraints
     func setupConstraints(){
         setDropDown()
         view.addSubview(contentView)
@@ -242,6 +254,7 @@ class FilterViewController: UIViewController {
         }
     }
     
+    //MARK: Set Data to VC
     func setData(){
         DispatchQueue.main.async {
             let items = self.products.bestSeller
@@ -256,6 +269,7 @@ class FilterViewController: UIViewController {
         }
     }
     
+    //MARK: Close VC Tapped
     @objc func tabButtonTapped(btn: UIButton){
         if btn == dismissButton{
             dismiss(animated: true, completion: nil)
@@ -265,6 +279,7 @@ class FilterViewController: UIViewController {
     }
 }
 
+//MARK: Extention of VC Presenter
 extension FilterViewController: FilterView{
     func fetchProducts(product: Product) {
         self.products = product

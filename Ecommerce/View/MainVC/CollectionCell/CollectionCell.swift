@@ -11,8 +11,10 @@ import SnapKit
 
 class CollecitonCell: UICollectionViewCell{
     
+    //MARK: Identofier of Collection Cell
     static let identifier = "CustomCell"
     
+    //MARK: Background View
     private lazy var backgroundV: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -20,6 +22,7 @@ class CollecitonCell: UICollectionViewCell{
         return view
     }()
     
+    //MARK: Icon of Product
     private lazy var iconImage: UIImageView = {
         let imageV = UIImageView()
         imageV.image = UIImage(systemName: "iphone")
@@ -28,6 +31,7 @@ class CollecitonCell: UICollectionViewCell{
         return imageV
     }()
     
+    //MARK: Category of Product
     private lazy var categoryTitle: UILabel = {
         let label = UILabel()
         label.text = "Computer"
@@ -38,10 +42,11 @@ class CollecitonCell: UICollectionViewCell{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        setupUI()
+        setConstraints()
     }
     
-    private func setupUI(){
+    //MARK: Set constraints
+    private func setConstraints(){
         contentView.addSubview(backgroundV)
         backgroundV.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -61,6 +66,7 @@ class CollecitonCell: UICollectionViewCell{
         }
     }
     
+    //MARK: Fetch Data, and Set To Screen
     func fetchData(icon: UIImage, title: String){
         DispatchQueue.main.async { [self] in
             iconImage.image = icon
@@ -68,6 +74,7 @@ class CollecitonCell: UICollectionViewCell{
         }
     }
     
+    //MARK: Did selected Function
     func didSelected(indx: Int){
         iconImage.tintColor = .white
         backgroundV.backgroundColor = UIColor.customOrangeTint
@@ -75,6 +82,7 @@ class CollecitonCell: UICollectionViewCell{
         
     }
     
+    //MARK: Did Deselected Function
     func didDeselect(indx: Int){
         backgroundV.backgroundColor = .white
         iconImage.tintColor = UIColor(red: 179/255, green: 179/255, blue: 199/255, alpha: 1)
