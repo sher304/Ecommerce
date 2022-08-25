@@ -52,7 +52,7 @@ class DetailViewController: UIViewController {
         button.backgroundColor = UIColor.customDarkBlue
         button.layer.cornerRadius = 10
         button.tintColor = .white
-
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -284,9 +284,13 @@ class DetailViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
+        navigationController?.navigationBar.tintColor = .clear
         
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(), landscapeImagePhone: UIImage(), style: .done, target: nil, action: nil)
+    }
+    
+    
+    @objc func backButtonTapped(){
+        navigationController?.popViewController(animated: true)
     }
     
     
