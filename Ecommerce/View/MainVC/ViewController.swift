@@ -14,12 +14,17 @@ protocol MainView: AnyObject{
 
 class MainViewController: UIViewController {
     
+    
+    //MARK: Presenter
     var presenter: MainPresenter!
     
+    //MARK: Products data
     var products: Product? = nil
     
+    //MARK: Content Size Frame
     private lazy var contentSize = CGSize(width: view.frame.width, height: view.frame.height + 360)
     
+    //MARK: Scroll View
     private lazy var scrollView: UIScrollView = {
         let scrollV = UIScrollView()
         scrollV.contentSize = contentSize
@@ -30,6 +35,7 @@ class MainViewController: UIViewController {
         return scrollV
     }()
     
+    //MARK: Content View
     private lazy var contentView: UIView = {
         let view = UIView()
         view.frame.size = contentSize
@@ -37,13 +43,14 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    
+    //MARK: Map Icon
     private lazy var mapIcon: UIImageView = {
         let imageV = UIImageView()
         imageV.image = UIImage(named: "pin")
         return imageV
     }()
     
+    //MARK: Location Title
     private lazy var locationTitle: UILabel = {
         let label = UILabel()
         label.text = "Zihuatanejo, Gro"
@@ -52,6 +59,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    //MARK: Down Button
     private lazy var downButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
@@ -60,6 +68,7 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    //MARK: Filter Button
     private lazy var filterButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "filter"), for: .normal)
@@ -68,6 +77,7 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    //MARK: Categoriese Big Title
     private lazy var categoriesTitle: UILabel = {
         let label = UILabel()
         label.text = "Select Category"
@@ -76,6 +86,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    //MARK: view all title - Label
     private lazy var viewAllTitle: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.customOrangeTint
@@ -84,6 +95,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    //MARK: Collection of Categories
     private lazy var categoryCollectionV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -97,6 +109,7 @@ class MainViewController: UIViewController {
         return collectionV
     }()
     
+    //MARK: Search Bar
     private lazy var searchBar: UISearchBar = {
         let searchB = UISearchBar()
         searchB.backgroundColor = .white
@@ -111,6 +124,7 @@ class MainViewController: UIViewController {
         return searchB
     }()
     
+    //MARK: Scan Button Near of Search Bar
     private lazy var scanButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "scan"), for: .normal)
@@ -120,6 +134,7 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    //MARK: Hot Sales - Label
     private lazy var salesLabel: UILabel = {
         let label = UILabel()
         label.text = "Hot sales"
@@ -128,6 +143,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    //MARK: See More - Label
     private lazy var seeMoreTitle: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.customOrangeTint
@@ -136,6 +152,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    //MARK: Images Wheel Collection View
     private lazy var wheelCollectionImage: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -154,6 +171,7 @@ class MainViewController: UIViewController {
         return collectionV
     }()
     
+    //MARK: Best Seller label
     private lazy var bestSellerLabel: UILabel = {
         let label = UILabel()
         label.text = "Best Seller"
@@ -162,6 +180,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    //MARK: See more Second Title
     private lazy var seeMoreSecondTitle: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.customOrangeTint
@@ -170,6 +189,7 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    //MARK: Products Table View
     private lazy var productsTableView: UITableView = {
         let tableV = UITableView()
         tableV.register(BestSellerTableCell.self, forCellReuseIdentifier: BestSellerTableCell.identifier)
@@ -187,13 +207,14 @@ class MainViewController: UIViewController {
         setupNavBar()
     }
     
-    
+    //MARK: Settings of Scroll View
     func seupScrollView(){
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        setupUI()
+        setConstraints()
     }
     
+    //MARK: Settings of Navigation Bar
     func setupNavBar(){
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -204,7 +225,8 @@ class MainViewController: UIViewController {
         navigationController?.navigationBar.topItem?.title = ""
     }
     
-    func setupUI(){
+    //MARK: Settings Constraints
+    func setConstraints(){
         contentView.addSubview(mapIcon)
         mapIcon.snp.makeConstraints { make in
             make.leading.equalTo(132)
@@ -307,6 +329,7 @@ class MainViewController: UIViewController {
         }
     }
     
+    //MARK: Filter button Tapped
     @objc func filterTapped(){
         let vc = FilterBuilder.build()
         present(vc, animated: true, completion: nil)
@@ -314,6 +337,7 @@ class MainViewController: UIViewController {
     
 }
 
+//MARK: Extension of VC Presenter
 extension MainViewController: MainView{
     func showProducts(products: Product) {
         DispatchQueue.main.async { [self] in
@@ -322,9 +346,9 @@ extension MainViewController: MainView{
             productsTableView.reloadData()
         }
     }
-
 }
 
+//MARK: Extension of Collection View
 extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == categoryCollectionV{
@@ -350,6 +374,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         }
     }
     
+    //MARK: Set frame of Collection Sizes
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == categoryCollectionV{
             return CGSize(width: 77, height: 77)
@@ -358,12 +383,14 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         }
     }
     
+    //MARK: Category did selected
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CollecitonCell {
             cell.didSelected(indx: indexPath.row + 1)
         }
     }
     
+    //MARK: Category did deselected
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CollecitonCell {
             cell.didDeselect(indx: indexPath.row + 1)
@@ -371,7 +398,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
 }
 
+//MARK: Extension of Table View
 extension MainViewController: UITableViewDelegate, UITableViewDataSource{
+    //MARK: Amount of Table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -383,12 +412,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     
+    //MARK: Frame of Table Cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return productsTableView.frame.height
     }
     
 }
 
+//MARK: Extension of Scroll View
 extension MainViewController: UIScrollViewDelegate{
     //MARK: Scroll Down, Hide Navbar
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

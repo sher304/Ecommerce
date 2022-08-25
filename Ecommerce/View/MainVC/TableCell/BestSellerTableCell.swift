@@ -11,10 +11,13 @@ import Kingfisher
 
 class BestSellerTableCell: UITableViewCell{
     
+    //MARK: Identifier of Table Cell
     static let identifier = "CustomCell"
     
+    //MARK: ProducstData
     var products: Product? = nil
     
+    //MARK: Collection View
     private lazy var collectionV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionV = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -27,23 +30,25 @@ class BestSellerTableCell: UITableViewCell{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        setupUI()
+        setupConstraints()
     }
     
-    private func setupUI(){
+    //MARK: Setup Constraints
+    private func setupConstraints(){
         contentView.addSubview(collectionV)
         collectionV.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
+    //MARK: Fetch Data and Set to Products Data
     func fetchProducts(products: Product){
         self.products = products
         collectionV.reloadData()
     }
 }
 
+//MARK: Extenstion of Collection View
 extension BestSellerTableCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products?.bestSeller.count ?? 0
@@ -64,5 +69,8 @@ extension BestSellerTableCell: UICollectionViewDelegateFlowLayout, UICollectionV
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 181, height: 227)
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("@")
+        
+    }
 }
