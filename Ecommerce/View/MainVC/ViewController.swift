@@ -334,7 +334,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return products?.homeStore.count ?? 0
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == categoryCollectionV{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollecitonCell.identifier, for: indexPath) as? CollecitonCell else { return CollecitonCell()}
