@@ -55,7 +55,7 @@ class OnBoardViewController: UIViewController {
     func pushToMainView(){
         DispatchQueue.main.async {
             sleep(2)
-            let vc = MainBuilder.build()
+            let vc = TabBarViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
