@@ -135,6 +135,13 @@ class DetailViewController: UIViewController {
         return imageV
     }()
     
+    private lazy var raitingInfrom: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(white: 0, alpha: 0.5)
+        label.font = UIFont(name: "Mark Pro Medium", size: 15)
+        return label
+    }()
+    
     private lazy var elementCollectionView: UICollectionView  = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -358,6 +365,11 @@ class DetailViewController: UIViewController {
             make.centerY.equalTo(thirdStar)
         }
         
+        informParentView.addSubview(raitingInfrom)
+        raitingInfrom.snp.makeConstraints { make in
+            make.leading.equalTo(fourthStar.snp.trailing).offset(15)
+            make.centerY.equalTo(fourthStar)
+        }
         
         informParentView.addSubview(elementCollectionView)
         elementCollectionView.snp.makeConstraints { make in
@@ -473,6 +485,7 @@ class DetailViewController: UIViewController {
             ssdTitle.text = productDetail?.ssd
             sdcardTitle.text = productDetail?.sd
             addToCartButton.setTitle("Add to Cart                 $\(productDetail?.price ?? Int())", for: .normal)
+            raitingInfrom.text = productDetail?.rating.description
             if productDetail?.isFavorites ?? Bool(){
                 favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             }
