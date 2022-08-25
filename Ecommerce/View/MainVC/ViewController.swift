@@ -64,7 +64,6 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         button.tintColor = UIColor(red: 179/255, green: 179/255, blue: 179/255, alpha: 1)
-        button.addTarget(self, action: #selector(filterTapped), for: .touchUpInside)
         return button
     }()
     
@@ -200,6 +199,56 @@ class MainViewController: UIViewController {
         return tableV
     }()
     
+    private lazy var customTabBarMenu: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.customDarkBlue
+        view.layer.cornerRadius = 30
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
+    private lazy var homeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "circle.fill"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(tabBartapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var homeButtonLabel: UIButton = {
+        let button = UIButton()
+        button.setTitle("Explorer", for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(tabBartapped), for: .touchUpInside)
+        button.titleLabel?.font = UIFont(name: "Mark Pro Bold", size: 15)
+        return button
+    }()
+    
+    
+    private lazy var cartButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "bag"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(tabBartapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var favButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(tabBartapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var personButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "person"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(tabBartapped), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.viewDidLoad()
@@ -212,6 +261,7 @@ class MainViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         setConstraints()
+        setupTabBarConstraints()
     }
     
     //MARK: Settings of Navigation Bar
@@ -220,9 +270,7 @@ class MainViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
-    
-        navigationController?.navigationBar.tintColor = UIColor.customBackgroundWhite
-        navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.navigationBar.tintColor = .clear
     }
     
     //MARK: Settings Constraints
@@ -329,10 +377,68 @@ class MainViewController: UIViewController {
         }
     }
     
+    
+    func setupTabBarConstraints(){
+        view.addSubview(customTabBarMenu)
+        customTabBarMenu.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(72)
+            make.bottom.equalToSuperview()
+        }
+        
+        customTabBarMenu.addSubview(homeButton)
+        homeButton.snp.makeConstraints { make in
+            make.leading.equalTo(68)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(8)
+        }
+        
+        customTabBarMenu.addSubview(homeButtonLabel)
+        homeButtonLabel.snp.makeConstraints { make in
+            make.leading.equalTo(homeButton.snp.trailing).offset(7)
+            make.centerY.equalTo(homeButton)
+        }
+        
+        customTabBarMenu.addSubview(cartButton)
+        cartButton.snp.makeConstraints { make in
+            make.centerY.equalTo(homeButton)
+            make.leading.equalTo(homeButtonLabel.snp.trailing).offset(47)
+            make.width.equalTo(17.54)
+            make.height.equalTo(18)
+        }
+        
+        customTabBarMenu.addSubview(favButton)
+        favButton.snp.makeConstraints { make in
+            make.centerY.equalTo(cartButton)
+            make.leading.equalTo(cartButton.snp.trailing).offset(52)
+            make.width.equalTo(19)
+            make.height.equalTo(17)
+        }
+        customTabBarMenu.addSubview(personButton)
+        personButton.snp.makeConstraints { make in
+            make.leading.equalTo(favButton.snp.trailing).offset(52)
+            make.centerY.equalTo(favButton)
+            make.width.equalTo(17)
+            make.height.equalTo(17)
+        }
+    }
+    
+    
     //MARK: Filter button Tapped
     @objc func filterTapped(){
         let vc = FilterBuilder.build()
         present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func tabBartapped(btn: UIButton){
+        if btn == homeButton || btn == homeButtonLabel{
+            navigationController?.pushViewController(MainBuilder.build(), animated: true)
+        }else if btn == cartButton{
+            navigationController?.pushViewController(CartBuilder.build(), animated: true)
+        }else if btn == favButton{
+            navigationController?.pushViewController(DetailBuilder.build(), animated: true)
+        }
     }
     
 }
@@ -408,7 +514,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BestSellerTableCell()
         guard let items = products else { return BestSellerTableCell()}
-        cell.fetchProducts(products: items)
+        cell.fetchProducts(products: items, delegate: self)
         return cell
     }
     
@@ -435,3 +541,9 @@ extension MainViewController: UIScrollViewDelegate{
     }
 }
 
+
+extension MainViewController: BestSellerDelegate{
+    func didSelected() {
+        self.navigationController?.pushViewController(DetailBuilder.build(), animated: true)
+    }
+}

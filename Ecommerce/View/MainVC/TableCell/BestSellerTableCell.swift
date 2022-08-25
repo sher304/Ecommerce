@@ -17,6 +17,8 @@ class BestSellerTableCell: UITableViewCell{
     //MARK: ProducstData
     var products: Product? = nil
     
+    var delegate: BestSellerDelegate? = nil
+    
     //MARK: Collection View
     private lazy var collectionV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -42,8 +44,9 @@ class BestSellerTableCell: UITableViewCell{
     }
     
     //MARK: Fetch Data and Set to Products Data
-    func fetchProducts(products: Product){
+    func fetchProducts(products: Product, delegate: BestSellerDelegate){
         self.products = products
+        self.delegate = delegate
         collectionV.reloadData()
     }
 }
@@ -70,7 +73,10 @@ extension BestSellerTableCell: UICollectionViewDelegateFlowLayout, UICollectionV
         return CGSize(width: 181, height: 227)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("@")
-        
+        delegate?.didSelected()
     }
+}
+
+protocol BestSellerDelegate{
+    func didSelected()
 }

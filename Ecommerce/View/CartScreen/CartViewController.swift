@@ -252,9 +252,9 @@ class CartViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
-    
-        navigationController?.navigationBar.tintColor = UIColor.customBackgroundWhite
-        navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.navigationBar.tintColor = .clear
+
+
     }
     
     @objc func backButtonTappet(){
