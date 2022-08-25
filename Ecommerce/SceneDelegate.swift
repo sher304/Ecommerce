@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         let navController = UINavigationController()
-        let viewController = DetailBuilder.build()
+        let viewController = MainBuilder.build()
         navController.viewControllers = [viewController]
         window.rootViewController = navController
         self.window = window

@@ -56,6 +56,7 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         button.tintColor = UIColor(red: 179/255, green: 179/255, blue: 179/255, alpha: 1)
+        button.addTarget(self, action: #selector(filterTapped), for: .touchUpInside)
         return button
     }()
     
@@ -63,6 +64,7 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "filter"), for: .normal)
         button.tintColor = UIColor.customDarkBlue
+        button.addTarget(self, action: #selector(filterTapped), for: .touchUpInside)
         return button
     }()
     
@@ -114,6 +116,7 @@ class MainViewController: UIViewController {
         button.setImage(UIImage(named: "scan"), for: .normal)
         button.layer.cornerRadius = 34 / 2
         button.backgroundColor = UIColor.customOrangeTint
+        button.addTarget(self, action: #selector(filterTapped), for: .touchUpInside)
         return button
     }()
     
@@ -217,14 +220,13 @@ class MainViewController: UIViewController {
         downButton.snp.makeConstraints { make in
             make.leading.equalTo(locationTitle.snp.trailing).offset(8)
             make.centerY.equalTo(locationTitle)
-            make.width.equalTo(10)
-            make.height.equalTo(5)
         }
         
         contentView.addSubview(filterButton)
         filterButton.snp.makeConstraints { make in
             make.trailing.equalTo(-35)
             make.centerY.equalTo(downButton)
+            make.width.height.equalTo(25)
         }
         
         contentView.addSubview(categoriesTitle)
@@ -300,6 +302,11 @@ class MainViewController: UIViewController {
             make.top.equalTo(bestSellerLabel.snp.bottom).offset(21)
             make.bottom.equalToSuperview()
         }
+    }
+    
+    @objc func filterTapped(){
+        let vc = FilterBuilder.build()
+        present(vc, animated: true, completion: nil)
     }
     
 }
@@ -394,3 +401,4 @@ extension MainViewController: UIScrollViewDelegate{
         }
     }
 }
+

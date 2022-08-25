@@ -1,28 +1,28 @@
 PODS:
   - Alamofire (5.6.2)
+  - iOSDropDown (0.4.0)
   - Kingfisher (7.3.2)
   - SnapKit (5.6.0)
-  - ToosieSlide (1.1.1)
 
 DEPENDENCIES:
   - Alamofire
+  - iOSDropDown
   - Kingfisher
   - SnapKit
-  - ToosieSlide
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - iOSDropDown
     - Kingfisher
     - SnapKit
-    - ToosieSlide
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  iOSDropDown: ce9daa584eaa5567cafc1b633e3cc7eb6d9cea42
   Kingfisher: 0086ad83719761ba9b2cdaf6ef4d5b4878cbae23
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  ToosieSlide: b410e89e0e1c00aecddeecebd1b4a8ed66385cac
 
-PODFILE CHECKSUM: b7971a3ed9d75db241ce637f9833223a531fedcf
+PODFILE CHECKSUM: ea3625262697877957f02496046d529a1a046123
 
 COCOAPODS: 1.11.3

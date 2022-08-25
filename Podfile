@@ -9,4 +9,5 @@ target 'Ecommerce' do
 	pod 'SnapKit'
 	pod 'Alamofire'
 	pod 'Kingfisher'
+	pod 'iOSDropDown'
 end
