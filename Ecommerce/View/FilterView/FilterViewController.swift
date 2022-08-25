@@ -19,6 +19,7 @@ class FilterViewController: UIViewController {
     
     var products: Product! = nil
     
+    
     private lazy var contentView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 14
@@ -69,12 +70,14 @@ class FilterViewController: UIViewController {
         return view
     }()
     
-    private lazy var barndDropDownMenu: DropDown = {
+    private lazy var brandDropDownMenu: DropDown = {
         let menu = DropDown()
         menu.rowBackgroundColor = UIColor.customBackgroundWhite
         menu.arrowColor = UIColor.customGray
         menu.selectedRowColor = UIColor.customOrangeTint
         menu.textColor = .black
+        menu.text = "Choose brand..."
+        menu.font = UIFont(name: "Mark Pro", size: 18)
         return menu
     }()
     
@@ -92,6 +95,8 @@ class FilterViewController: UIViewController {
         menu.arrowColor = UIColor.customGray
         menu.selectedRowColor = UIColor.customOrangeTint
         menu.textColor = .black
+        menu.text = "Price..."
+        menu.font = UIFont(name: "Mark Pro", size: 18)
         return menu
     }()
     
@@ -109,6 +114,8 @@ class FilterViewController: UIViewController {
         menu.arrowColor = UIColor.customGray
         menu.selectedRowColor = UIColor.customOrangeTint
         menu.textColor = .black
+        menu.text = "4.5 to 5.5 inches"
+        menu.font = UIFont(name: "Mark Pro", size: 18)
         return menu
     }()
     
@@ -135,13 +142,9 @@ class FilterViewController: UIViewController {
     }
     
     func setDropDown(){
-        
-        let items = products.bestSeller
-        barndDropDownMenu.optionArray = [items.description]
-//        barndDropDownMenu.optionArray = ["Option 1", "Option 2", "Option 3"]
     
-        barndDropDownMenu.didSelect { selectedText, index, id in
-            self.barndDropDownMenu.text = selectedText
+        brandDropDownMenu.didSelect { selectedText, index, id in
+            self.brandDropDownMenu.text = selectedText
         }
     }
     
@@ -189,8 +192,8 @@ class FilterViewController: UIViewController {
             make.top.equalTo(brandTitle.snp.bottom).offset(20)
         }
         
-        brandDropDownParent.addSubview(barndDropDownMenu)
-        barndDropDownMenu.snp.makeConstraints { make in
+        brandDropDownParent.addSubview(brandDropDownMenu)
+        brandDropDownMenu.snp.makeConstraints { make in
             make.leading.equalTo(15)
             make.trailing.equalTo(-20)
             make.top.bottom.equalToSuperview()
@@ -239,6 +242,21 @@ class FilterViewController: UIViewController {
         }
     }
     
+    func setData(){
+        DispatchQueue.main.async {
+            let items = self.products.bestSeller
+            var brands: [String] = []
+            var prices: [String] = []
+            for item in items {
+                brands.append(item.title)
+                prices.append("$\(item.priceWithoutDiscount)")
+            }
+            self.brandDropDownMenu.optionArray = brands
+            self.priseDropDownMenu.optionArray = prices
+            print("data \(brands)")
+        }
+    }
+    
     @objc func tabButtonTapped(btn: UIButton){
         if btn == dismissButton{
             dismiss(animated: true, completion: nil)
@@ -251,6 +269,6 @@ class FilterViewController: UIViewController {
 extension FilterViewController: FilterView{
     func fetchProducts(product: Product) {
         self.products = product
-        sizeDropDownMenu.reloadInputViews()
+        setData()
     }
 }
