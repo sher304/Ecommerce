@@ -15,6 +15,8 @@ class CartTableCell: UITableViewCell{
     
     static let identifier = "CustomTableCell"
     
+    var delegate: CartTableDelegate? = nil
+    
     private lazy var productImage: UIImageView = {
         let imageV = UIImageView()
         imageV.layer.cornerRadius = 10
@@ -39,7 +41,6 @@ class CartTableCell: UITableViewCell{
         return label
     }()
     
-    var presenter: CartPresenter?
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -84,6 +85,7 @@ class CartTableCell: UITableViewCell{
         return button
     }()
   
+    var products: CartProduct? = nil
     
     func setupView(){
         contentView.backgroundColor = UIColor.customDarkBlue
@@ -149,8 +151,9 @@ class CartTableCell: UITableViewCell{
         }
     }
     
-    func fetchData(link: String, title: String, price: Int){
+    func fetchData(link: String, title: String, price: Int, delegate: CartTableDelegate){
         DispatchQueue.main.async { [self] in
+            self.delegate = delegate
             productImage.kf.indicatorType = .activity
             productImage.kf.setImage(with: URL(string: link), placeholder: nil, options: nil, completionHandler: nil)
             productName.text = title
@@ -160,14 +163,20 @@ class CartTableCell: UITableViewCell{
     
     @objc func productTappet(btn: UIButton){
         if btn == subtractButton{
-            guard var price = Int(countLabel.text ?? String()) else { return }
-            price -= 1
-            countLabel.text = price.description
+            guard var amount = Int(countLabel.text ?? String()) else { return }
+            amount -= 1
+            countLabel.text = amount.description
+            if amount == 0{
+                delegate?.deleteProduct()
+            }
         }else{
-            guard var price = Int(countLabel.text ?? String()) else { return }
-            price += 1
-            countLabel.text = price.description
+            guard var amount = Int(countLabel.text ?? String()) else { return }
+            amount += 1
+            countLabel.text = amount.description
         }
     }
+}
 
+protocol CartTableDelegate{
+    func deleteProduct()
 }

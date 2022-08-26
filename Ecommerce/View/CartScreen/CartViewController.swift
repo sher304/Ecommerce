@@ -253,8 +253,6 @@ class CartViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
         navigationController?.navigationBar.tintColor = .clear
-
-
     }
     
     @objc func backButtonTappet(){
@@ -275,7 +273,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = CartTableCell()
         guard let items = cartProducts?.basket[indexPath.row] else { return CartTableCell()}
-        cell.fetchData(link: items.images, title: items.title, price: items.price)
+        cell.fetchData(link: items.images, title: items.title, price: items.price, delegate: self)
         return cell
     }
     
@@ -307,5 +305,11 @@ extension CartViewController: UIScrollViewDelegate{
             //scrolling up
             navigationController?.setNavigationBarHidden(false, animated: true)
         }
+    }
+}
+
+extension CartViewController: CartTableDelegate{
+    func deleteProduct() {
+        productsTableView.reloadData()
     }
 }

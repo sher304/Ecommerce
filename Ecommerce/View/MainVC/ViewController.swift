@@ -196,6 +196,7 @@ class MainViewController: UIViewController {
         tableV.dataSource = self
         tableV.backgroundColor = contentView.backgroundColor
         tableV.showsVerticalScrollIndicator = false
+        tableV.isScrollEnabled = false
         return tableV
     }()
     
@@ -432,9 +433,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func tabBartapped(btn: UIButton){
-        if btn == homeButton || btn == homeButtonLabel{
-            navigationController?.pushViewController(MainBuilder.build(), animated: true)
-        }else if btn == cartButton{
+        if btn == cartButton{
             navigationController?.pushViewController(CartBuilder.build(), animated: true)
         }else if btn == favButton{
             navigationController?.pushViewController(DetailBuilder.build(), animated: true)
