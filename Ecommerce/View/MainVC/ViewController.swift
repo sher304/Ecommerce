@@ -72,7 +72,6 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "filter"), for: .normal)
         button.tintColor = UIColor.customDarkBlue
-        button.addTarget(self, action: #selector(filterTapped), for: .touchUpInside)
         return button
     }()
     
@@ -105,6 +104,7 @@ class MainViewController: UIViewController {
         collectionV.dataSource = self
         collectionV.backgroundColor = contentView.backgroundColor
         collectionV.showsHorizontalScrollIndicator = false
+        collectionV.layer.cornerRadius = 30
         return collectionV
     }()
     
@@ -123,7 +123,7 @@ class MainViewController: UIViewController {
         return searchB
     }()
     
-    //MARK: Scan Button Near of Search Bar
+    //MARK: Scan Button Near of Search Bar OPENS Filter View Controller!!
     private lazy var scanButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "scan"), for: .normal)
@@ -196,6 +196,7 @@ class MainViewController: UIViewController {
         tableV.dataSource = self
         tableV.backgroundColor = contentView.backgroundColor
         tableV.showsVerticalScrollIndicator = false
+        tableV.isScrollEnabled = false
         return tableV
     }()
     
@@ -251,6 +252,8 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let indexPath = IndexPath(index: 0)
+        categoryCollectionV.selectItem(at: indexPath, animated: false, scrollPosition: [])
         presenter.viewDidLoad()
         seupScrollView()
         setupNavBar()
@@ -426,15 +429,14 @@ class MainViewController: UIViewController {
     
     
     //MARK: Filter button Tapped
+    //MARK: Scan Button OPENS Filter View Controller!!
     @objc func filterTapped(){
         let vc = FilterBuilder.build()
         present(vc, animated: true, completion: nil)
     }
     
     @objc func tabBartapped(btn: UIButton){
-        if btn == homeButton || btn == homeButtonLabel{
-            navigationController?.pushViewController(MainBuilder.build(), animated: true)
-        }else if btn == cartButton{
+        if btn == cartButton{
             navigationController?.pushViewController(CartBuilder.build(), animated: true)
         }else if btn == favButton{
             navigationController?.pushViewController(DetailBuilder.build(), animated: true)
@@ -468,9 +470,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == categoryCollectionV{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollecitonCell.identifier, for: indexPath) as? CollecitonCell else { return CollecitonCell()}
-            let items = presenter.items
-            let images = presenter.images
-            cell.fetchData(icon: images[indexPath.row], title: items[indexPath.row])
+            let items = presenter.items[indexPath.row]
+            cell.fetchData(icon: items.image!, title: items.title!)
             return cell
         }else{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WheelCollectionCell.identifier, for: indexPath) as? WheelCollectionCell else { return WheelCollectionCell()}
