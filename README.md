@@ -2,7 +2,7 @@
 
 <h2 align="center"> Проект Ecommerce, Тестовое Задание</h2>
 
-https://user-images.githubusercontent.com/87121837/186832985-d05ae1dc-22cb-4550-b6e4-d1ccdd8ee824.mp4
+https://user-images.githubusercontent.com/87121837/186836899-29e62610-5463-4ded-a8fc-5fb9e6ebda37.mp4
 
 <h1 align="center">Main Screen</h1>
 
