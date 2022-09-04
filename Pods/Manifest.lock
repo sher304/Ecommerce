@@ -1,11 +1,13 @@
 PODS:
   - Alamofire (5.6.2)
+  - Hero (1.6.2)
   - iOSDropDown (0.4.0)
   - Kingfisher (7.3.2)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
   - Alamofire
+  - Hero
   - iOSDropDown
   - Kingfisher
   - SnapKit
@@ -13,16 +15,18 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - Hero
     - iOSDropDown
     - Kingfisher
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  Hero: c69009dbc9e2f0472e081adc644dba05fcedae72
   iOSDropDown: ce9daa584eaa5567cafc1b633e3cc7eb6d9cea42
   Kingfisher: 0086ad83719761ba9b2cdaf6ef4d5b4878cbae23
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: ea3625262697877957f02496046d529a1a046123
+PODFILE CHECKSUM: 53244e6b9a1a4e9b91c4d05dbafa17fcfce7dfa9
 
 COCOAPODS: 1.11.3

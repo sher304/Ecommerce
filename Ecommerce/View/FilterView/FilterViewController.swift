@@ -272,9 +272,9 @@ class FilterViewController: UIViewController {
     //MARK: Close VC Tapped
     @objc func tabButtonTapped(btn: UIButton){
         if btn == dismissButton{
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         }else{
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         }
     }
 }

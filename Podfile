@@ -10,4 +10,5 @@ target 'Ecommerce' do
 	pod 'Alamofire'
 	pod 'Kingfisher'
 	pod 'iOSDropDown'
+	pod 'Hero'
 end

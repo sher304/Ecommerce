@@ -256,7 +256,7 @@ class CartViewController: UIViewController {
     }
     
     @objc func backButtonTappet(){
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
     }
     
     @objc func cartScreenTapp(){
