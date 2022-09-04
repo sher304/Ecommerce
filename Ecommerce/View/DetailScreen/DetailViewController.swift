@@ -290,7 +290,7 @@ class DetailViewController: UIViewController {
     
     
     @objc func backButtonTapped(){
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
     }
     
     

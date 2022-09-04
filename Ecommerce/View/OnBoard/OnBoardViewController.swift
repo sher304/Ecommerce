@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Hero
 import SnapKit
 
 class OnBoardViewController: UIViewController {
@@ -47,13 +48,6 @@ class OnBoardViewController: UIViewController {
             make.height.width.equalTo(132)
         }
         
-        //        circleImage.addSubview(companyTitle)
-        //        companyTitle.snp.makeConstraints { make in
-        //            make.top.equalTo(32)
-        //            make.leading.equalTo(34)
-        //            make.width.equalTo(200)
-        //        }
-        
         view.addSubview(companyTitle)
         companyTitle.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -63,11 +57,13 @@ class OnBoardViewController: UIViewController {
     }
     
     func pushToMainView(){
-                DispatchQueue.main.async {
-                    sleep(2)
-                    let vc = MainBuilder.build()
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
+        DispatchQueue.main.async {
+            sleep(2)
+            let vc = MainBuilder.build()
+            vc.hero.isEnabled = true
+            vc.hero.modalAnimationType = .zoomOut
+            self.present(vc, animated: true, completion: nil)
+        }
     }
     
     func onBoardAnimate(){

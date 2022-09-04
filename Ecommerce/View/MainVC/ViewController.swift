@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Hero
 import SnapKit
 
 protocol MainView: AnyObject{
@@ -437,9 +438,15 @@ class MainViewController: UIViewController {
     
     @objc func tabBartapped(btn: UIButton){
         if btn == cartButton{
-            navigationController?.pushViewController(CartBuilder.build(), animated: true)
+            let vc = CartBuilder.build()
+            vc.hero.isEnabled = true
+            vc.hero.modalAnimationType = .selectBy(presenting: .pageIn(direction: .right), dismissing: .pageOut(direction: .left))
+            self.present(vc, animated: true, completion: nil)
         }else if btn == favButton{
-            navigationController?.pushViewController(DetailBuilder.build(), animated: true)
+            let vc = DetailBuilder.build()
+            vc.hero.isEnabled = true
+            vc.hero.modalAnimationType = .selectBy(presenting: .pageIn(direction: .left), dismissing: .pageOut(direction: .right))
+            self.present(vc, animated: true, completion: nil)
         }
     }
     
@@ -466,7 +473,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return products?.homeStore.count ?? 0
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == categoryCollectionV{
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollecitonCell.identifier, for: indexPath) as? CollecitonCell else { return CollecitonCell()}
@@ -545,6 +552,9 @@ extension MainViewController: UIScrollViewDelegate{
 
 extension MainViewController: BestSellerDelegate{
     func didSelected() {
-        self.navigationController?.pushViewController(DetailBuilder.build(), animated: true)
+        let vc = DetailBuilder.build()
+        vc.hero.isEnabled = true
+        vc.hero.modalAnimationType = .selectBy(presenting: .zoom, dismissing: .zoomOut)
+        present(vc, animated: true, completion: nil)
     }
 }
