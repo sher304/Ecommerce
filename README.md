@@ -1,6 +1,6 @@
 <h1 align="center">Ecommerce</h1>
 
-<h2 align="center"> Проект Ecommerce, Тестовое Задание</h2>
+<h2 align="center"> Проект Ecommerce</h2>
 
 https://user-images.githubusercontent.com/87121837/186836899-29e62610-5463-4ded-a8fc-5fb9e6ebda37.mp4
 
